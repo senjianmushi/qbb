@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<!-- 引用公共的foot页面模块 -->
+<header  th:replace="admin/common/head :: headCss"> </header>
+<link rel="stylesheet" type="text/css" href="/plugin/webuploader/css/bootstrap-theme.min.css">
+<link rel="stylesheet" type="text/css" href="/plugin/webuploader/css/style.css">
+<link rel="stylesheet" type="text/css" href="/plugin/webuploader/css/demo.css">
+<link rel="stylesheet" type="text/css" href="/plugin/webuploader/webuploader-0.1.5/webuploader.css">
+
+<body style="margin-top:0px">
+
+    <!-- 主页内容-开始 -->
+                <div class="smart-widget">
+                    <div class="smart-widget-inner">
+                        <div class="smart-widget-body">
+                            <form class="margin" id="formValidate2" data-validate="parsley" novalidate="">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">姓名</label>
+                                            <input type="text" placeholder="姓名" id="name" th:value="${employee.name}"
+                                                   class="form-control input-sm" data-parsley-required="true" disabled="disabled">
+                                        </div>
+                                    </div><!-- /.col -->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">身份证号码</label>
+                                            <input type="text" placeholder="身份证号码" id="identityId" th:value="${employee.identityId}"
+                                                   class="form-control input-sm" data-parsley-required="true" data-parsley-type="url" disabled="disabled">
+                                        </div>
+                                    </div><!-- /.col -->
+                                </div><!-- /.row -->
+
+                                <div class="form-group">
+                                    <label class="control-label">描述</label>
+                                    <textarea class="form-control" placeholder="描述内容" id="describes" th:text="${employee.describes}"
+                                              rows="3" data-parsley-required="true" disabled="disabled"></textarea>
+                                </div><!-- /form-group -->
+                                <div class="form-group">
+                                    <label class="control-label">备注</label>
+                                    <textarea class="form-control" placeholder="备注内容" id="comment" rows="3" th:text="${employee.comment}"
+                                              data-parsley-required="true" disabled="disabled"></textarea>
+                                </div><!-- /form-group -->
+
+                                <div class="form-group">
+                                    <label class="control-label">证据图片</label>
+                                    <div id="uploader" class="wu-example" style="border: 1px;">
+                                        <div class="statusBar" >
+                                            <div class="gallery-item" >
+                                                <div class="gallery-wrapper" >
+                                                    <div th:each="pic : ${employee.picUrls}" style="float: left;margin:5px;cursor: pointer" th:onclick="">
+                                                        <img  th:src="${pic}"  style="" th:onclick="watchPic('${pic}')">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div><!-- /form-group -->
+                            </form>
+                        </div>
+                    </div><!-- ./smart-widget-inner -->
+                </div><!-- ./smart-widget -->
+
+
+
+<!-- 主页内容-结束 -->
+<a href="#" class="scroll-to-top hidden-print"><i class="fa fa-chevron-up fa-lg"></i></a>
+<script src="/plugin/layer/layer.js"></script>
+<script type="text/javascript" th:src="@{/js/admin/profile/addProfile.js}"></script>
+<script>
+    function watchPic(url) {
+        //页面层
+        layer.open({
+            type: 2,
+            title: '图片详细信息',
+            maxmin: true,
+            shadeClose: true, //点击遮罩关闭层
+            area: ['1200px', '550px'],
+            content: "/view/picDetail?url=" + url
+        });
+    }
+</script>
+
+
+</body>
+</html>

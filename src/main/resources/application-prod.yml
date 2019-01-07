@@ -1,0 +1,29 @@
+server:
+  port: 8081
+
+#静态资源处理
+spring:
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:${web.upload.path}
+
+
+  #设置mysql
+  datasource:
+    url: jdbc:mysql://120.78.209.254:3306/db_qbb
+    username: qbb
+    password: qbb123
+
+#服务器所在ip
+local_ip: 120.78.209.254
+
+#配置外部访问文件地址
+web:
+  upload:
+    path: /opt/qbb_fileUpload/
+
+#当前服务器前缀地址
+localServer:
+  prixPath: http://${local_ip}:${server.port}/
+
+
+

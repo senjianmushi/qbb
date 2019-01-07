@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<!-- 引用公共的foot页面模块 -->
+<header  th:replace="admin/common/head :: headCss"> </header>
+
+<body class="overflow-hidden">
+
+<div class="wrapper preload">
+
+    <!-- 引用公共的foot页面模块 -->
+    <header id="head" th:replace="admin/common/head :: copy" > </header>
+    <!-- 引用公共的左侧菜单页面模块 -->
+    <aside id="navleft" th:replace="admin/common/navLeft :: copy" > </aside>
+
+    <!-- 主页内容-开始 -->
+    <div class="main-container">
+        <div class="padding-md">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="page-title">
+                        Welecome back
+                    </div>
+                    <div class="page-sub-header">
+                        杨铭隐
+                    </div>
+                </div>
+                <div class="col-sm-6 text-right text-left-sm p-top-sm">
+                    <div class="btn-group">
+                        <input type="text" class="form-control input-sm" placeholder="姓名" value="林华津" id="name">
+                    </div>
+                    <div class="btn-group">
+                        <input type="text" class="form-control input-sm" placeholder="身份证信息" value="330381199007164174" id="identityId">
+                    </div>
+
+                    <a class="btn btn-default" id="btnSearch" style="padding: 3px 6px 3px 6px"><i class="fa fa-search"></i></a>
+                </div>
+            </div>
+
+            <!-- 第一个 -->
+            <div id="tplView">
+            <script id="tpl" type="text/template">
+            {@each employeelist as it,index}
+                <div class="row m-top-md">
+                    <div class="col-lg-12">
+                        <div class="smart-widget widget-dark-blue">
+                            <div class="smart-widget-header">
+                                ${it.name}  ${it.identityId}
+                                <span class="smart-widget-option">
+                                            <a href="#" class="widget-refresh-option">
+                                                <i class="fa fa-refresh"></i>
+                                            </a>
+                                        </span>
+                            </div>
+                            <div class="smart-widget-inner" style="overflow-y: auto; overflow-x:hidden;height: 380px;">
+                                <div class="smart-widget-body no-padding">
+                                    <div class="padding-md row container" >
+
+                                        <div class="col-lg-6 border-right padding" style="height:330px;overflow-x:auto;">
+                                            <div class="" >
+                                                <div class="bg-white paddingTB-xs paddingLR-md">
+                                                    <b>描述</b>
+                                                    <hr style="margin-top:3px;margin-bottom:5px">
+                                                    <div class="">
+                                                        ${it.describes}
+                                                    </div>
+                                                </div>
+                                                <div class="bg-white paddingTB-xs paddingLR-md">
+                                                    <b>备注</b>
+                                                    <hr style="margin-top:3px;margin-bottom:5px">
+                                                    <div class="social-reply-section clearfix">
+                                                        ${it.comments}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-lg-4" style="height:330px;">
+                                            <b>截图</b>
+                                            <hr style="margin-top:3px;">
+                                            <div class="gallery-list js-masonry" style="height:300px;overflow-x: auto">
+                                                {@each it.picUrls as item}
+                                                <div class="gallery-item" >
+                                                    <div class="gallery-wrapper">
+                                                        <img src= ${item} alt="" style="width:105px; height:70px">
+                                                        <div class="gallery-overlay">
+                                                            <a  class="gallery-action enlarged-photo">
+                                                                <i class="fa fa-search-plus fa-lg lhj" onclick="watchPic('${item}')" ></i></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {@/each}
+
+                                            </div><!-- 图片的大框 -->
+
+
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div><!-- ./smart-widget-inner -->
+                        </div><!-- ./smart-widget -->
+                    </div><!-- ./col -->
+                </div><!-- row -->
+            {@/each}
+            </script>
+            </div>
+
+
+
+
+
+
+
+
+
+
+        </div><!-- ./padding-md -->
+    </div><!-- /main-container -->
+
+    <!-- 引用公共的foot页面模块 -->
+    <footer th:replace="admin/common/foot :: copy" > </footer>
+
+</div><!-- /wrapper -->
+<!-- 主页内容-结束 -->
+
+<a href="#" class="scroll-to-top hidden-print"><i class="fa fa-chevron-up fa-lg"></i></a>
+<script type="text/javascript" src="/plugin/juicer/juicer-min.js"></script>
+<script src="/plugin/layer/layer.js"></script>
+<script type="text/javascript" th:inline="javascript">
+    var tpl = document.getElementById('tpl').innerHTML;
+    var pageSize = 9;//每页显示的条目
+    window.onload=function(){
+
+    }
+
+    //初始化分页和列表
+    function initPage(){
+        $.ajax({
+            // 异步方式
+            url:  '/employee/pageListEmployee',
+            async: true,
+            type: "post",
+            datatype: 'json',
+            data: {
+                "page" : 1,//当前页
+                "pageSize": pageSize,
+                "name": $("#name").val(),
+                "identityId": $("#identityId").val()
+            },
+            success: function (result) {
+                if(result.code == 0){
+                    // $("#PageCount").val(result.data.total);//数据总条数
+                    // $("#PageSize").val(result.data.pageSize);//每页显示的条数
+                    // $("#visiblePages").val("7");//显示的页码数
+                    // $("#countindex").val(result.data.pages);//总页数
+                    // loadpage();
+                    console.log("result.data.data")
+                    console.log(result.data.data);
+                    $('#tplView').html(juicer(tpl, {employeelist:result.data.data}));//输出
+                }
+            }
+        });
+    }
+
+    //异步刷新分页列表
+    function getJobList(page){
+        if(page == undefined){
+            page = 1;
+        }
+        $.ajax({
+            // 异步方式
+            url:  '/job/listPageJob',
+            async: true,
+            type: "post",
+            datatype: 'json',
+            data: {
+                "page" : page,//当前页
+                "pageSize":pageSize,
+                "jobName": $("#name").val()
+            },
+            success: function (result) {
+                if(result.code == 0){
+                    //console.log(result)
+                    $('#tplView').html(juicer(tpl, {joblist:result.data.list}));//输出
+                }
+            }
+        });
+    }
+
+    function watchPic(url){
+        //页面层
+        layer.open({
+            type: 2,
+            title: '图片详细信息',
+            maxmin: true,
+            shadeClose: true, //点击遮罩关闭层
+            area : ['1200px' , '550px'],
+            content: "/view/picDetail?url=" + url
+        });
+
+        // alert("click2")
+        // var bigUrl = url;
+        // $(this).parents(".gallery-wrapper").append("<div id='pic'><img src='"+bigUrl+"' id='pic1'></div>");
+        // $(".gallery-item .gallery-wrapper img").mousemove(function(e){
+        //     var wH = document.documentElement.clientHeight
+        //     var wW = document.documentElement.clientWidth
+        //     var imgW =$("#pic1").width()
+        //     var imgH =$("#pic1").height()
+        //     var cssArr = {"top":"","left":"","bottom":"","right":""}
+        //
+        //     if(e.clientX+imgW > wW){
+        //         if(wW - e.clientX < imgW){
+        //             cssArr.left = (e.clientX-imgW-10)+"px";;
+        //
+        //         }else{
+        //             cssArr.right = 0;
+        //         }
+        //
+        //     }else{
+        //         cssArr.left = (e.clientX+10)+"px";
+        //     }
+        //
+        //     if(e.clientY+imgH > wH){
+        //         cssArr.bottom = 0;
+        //     }else{
+        //         cssArr.top = (e.clientY+10)+"px";
+        //     }
+        //     console.log($("#pic1").height(),wH)
+        //     console.log(cssArr)
+        //     $("#pic").css(cssArr).fadeIn("fast");
+        // });
+    }
+
+
+
+
+
+
+    $("#btnSearch").click(function(){
+        //getJobList();
+        initPage()
+    })
+    $("#btnAdd").click(function(){
+        updateView();
+    })
+</script>
+
+</body>
+</html>

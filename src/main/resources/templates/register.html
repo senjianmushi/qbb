@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="description" content="清白白注册" />
+	<title>清白白注册</title>
+	<link rel="stylesheet" th:href="@{/css/login/jq22.css}">
+	<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/bootstrap-3.3.4.css">
+	<link rel="stylesheet" type="text/css" href="/plugin/webuploader/webuploader-0.1.5/webuploader.css">
+	<!--<script src="/plugin/bootstrap/bootstrap.min.js"></script>-->
+</head>
+<body>
+<!-- begin -->
+<div id="login">
+	<div class="wrapper">
+		<div class="login">
+			<form action="/dologin" method="post" class="container offset1 loginform" style="max-width:800px">
+				<div id="owl-login">
+					<div class="hand"></div>
+					<div class="hand hand-r"></div>
+					<div class="arms">
+						<div class="arm"></div>
+						<div class="arm arm-r"></div>
+					</div>
+				</div>
+				<div class="pad" >
+					<div class="col-md-6">
+						<div class="control margin">
+							<input id="username" type="text" name="username" placeholder="用户名" tabindex="1" autofocus="autofocus" class="form-control">
+						</div>
+
+						<div class="control margin">
+							<input id="password" type="password" name="password" placeholder="密码" tabindex="2" class="form-control input-medium">
+						</div>
+
+						<div class="control margin">
+							<input id="password2" type="password" name="password2" placeholder="密码确认" tabindex="2" class="form-control input-medium">
+						</div>
+						<div class="control margin">
+							<!--dom结构部分-->
+							<div id="uploader-demo">
+								<!--用来存放item-->
+								<div id="fileList" class="uploader-list"></div>
+								<div id="filePicker">选择图片</div>
+							</div>
+							<input type="hidden" value="" id="docUrl">
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="control margin">
+							<input id="name" type="text" name="name" placeholder="公司名称" tabindex="1" autofocus="autofocus" class="form-control input-medium">
+						</div>
+						<div class="control margin">
+							<input id="email" type="text" name="email" placeholder="邮箱" tabindex="1" autofocus="autofocus" class="form-control input-medium">
+						</div>
+						<div class="control margin">
+							<input id="telephone" type="text" name="telephone" placeholder="手机" tabindex="1" autofocus="autofocus" class="form-control input-medium">
+						</div>
+						<div class="control margin">
+							<input id="confirm" type="checkbox">同意
+							<a class="modalLink" href="#" data-toggle="tooltip" data-html="true" data-placement="top" title="" data-original-title="注册声明
+								一、用户注册、登陆，视为接受本协议的约束。
+								二、用户承诺遵守国家的法律法规及部门规章
+								三、用户承诺遵守清白白相关准则.
+								四、用户注册时需要提交公司的盖章的照片。
+								五、用户侵犯第三人的知识产权，由该用户承担全部法律责任。
+
+								版权声明
+								jQuery插件库（www.jq22.com）站内所有涉及插件及代码由会员上传而来，jQuery插件库不拥有此类插件及代码的版权
+								jQuery插件库作为jQuery插件网络服务提供者，对非法转载，盗版行为的发生不具备充分的监控能力。但是当版权拥有者提出侵权指控并出示充分的版权证明材料时，jQuery插件库负有移除盗版和非法转载作品以及停止继续传播的义务。jQuery插件库在满足前款条件下采取移除等相应措施后不为此向原发布人承担违约责任或其他法律责任，包括不承担因侵权指控不成立而给原发布人带来损害的赔偿责任。
+								如果版权拥有者发现自己作品被侵权，请及时向jQuery插件库提出权利通知，并将姓名、电话、身份证明、权属证明、具体链接（URL）及详细侵权情况描述发往版权举报专用通道，jQuery插件库在收到相关举报文件后，在3个工作日内移除相关涉嫌侵权的内容
+								">《注册声明》《版权声明》
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="form-actions">
+					<a href="#" tabindex="5" class="btn pull-left btn-link text-muted">信息填写完成后会经过审核1-2日</a>
+					<a href="/view/login" tabindex="6" class="btn btn-link text-muted">登陆</a>
+					<button type="button" tabindex="4" class="btn btn-primary" id="btnRegister">注册</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script th:src="@{/js/jquery.min.js}" type="text/javascript" ></script>
+	<script src="/plugin/layer/layer.js"></script>
+	<script type="text/javascript" th:src="@{/plugin/webuploader/webuploader-0.1.5/webuploader.js}"></script>
+	<script>
+        var $ = jQuery,
+            $list = $('#fileList'),
+            // 浼樺寲retina, 鍦╮etina涓嬭繖涓€兼槸2
+            ratio = window.devicePixelRatio || 1,
+
+            // 设置缩略图大小
+            thumbnailWidth = 100 * ratio,
+            thumbnailHeight = 100 * ratio;
+
+        // 初始化Web Uploader
+        var uploader = WebUploader.create({
+
+            // 选完文件后，是否自动上传。
+            auto: true,
+
+            // swf文件路径
+            swf:  '/plugin/webuploader-0.1.5/Uploader.swf',
+
+            // 文件接收服务端。
+            server: '/employee/uploadEmployeePic',
+
+            // 选择文件的按钮。可选。
+            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+            pick: '#filePicker',
+
+            // 只允许选择图片文件。
+            accept: {
+                title: 'Images',
+                extensions: 'gif,jpg,jpeg,bmp,png',
+                mimeTypes: 'image/*'
+            }
+        });
+        // 当有文件添加进来的时候
+        uploader.on( 'fileQueued', function( file ) {
+            var $li = $(
+                '<div id="' + file.id + '" class="file-item thumbnail">' +
+                '<img>' +
+                '<div class="info">' + file.name + '</div>' +
+                '</div>'
+                ),
+                $img = $li.find('img');
+            // $list为容器jQuery实例
+            $list.append( $li );
+            // 创建缩略图
+            // 如果为非图片文件，可以不用调用此方法。
+            // thumbnailWidth x thumbnailHeight 为 100 x 100
+            uploader.makeThumb( file, function( error, src ) {
+                if ( error ) {
+                    $img.replaceWith('<span>不能预览</span>');
+                    return;
+                }
+
+                $img.attr( 'src', src );
+            }, thumbnailWidth, thumbnailHeight );
+        });
+
+        // 文件上传过程中创建进度条实时显示。
+        uploader.on( 'uploadProgress', function( file, percentage ) {
+            var $li = $( '#'+file.id ),
+                $percent = $li.find('.progress span');
+
+            // 避免重复创建
+            if ( !$percent.length ) {
+                $percent = $('<p class="progress"><span></span></p>')
+                    .appendTo( $li )
+                    .find('span');
+            }
+
+            $percent.css( 'width', percentage * 100 + '%' );
+        });
+
+        // 文件上传成功，给item添加成功class, 用样式标记上传成功。
+        uploader.on( 'uploadSuccess', function( file , response ) {
+            $( '#'+file.id ).addClass('upload-state-done');
+            console.log("response");
+            console.log(response);
+            if(response  != null){
+                $("#docUrl").val(response.data);
+			}
+        });
+
+        // 文件上传失败，显示上传出错。
+        uploader.on( 'uploadError', function( file ) {
+            var $li = $( '#'+file.id ),
+                $error = $li.find('div.error');
+
+            // 避免重复创建
+            if ( !$error.length ) {
+                $error = $('<div class="error"></div>').appendTo( $li );
+            }
+
+            $error.text('上传失败');
+        });
+
+        // 完成上传完了，成功或者失败，先删除进度条。
+        uploader.on( 'uploadComplete', function( file ) {
+            $( '#'+file.id ).find('.progress').remove();
+        });
+
+
+		$("#btnRegister").click(function () {
+            var user ={
+                username:$("#username").val(),
+                password:$("#password").val(),
+                name:$("#name").val(),
+                email:$("#email").val(),
+                telephone:$("#telephone").val(),
+                docUrl:$("#docUrl").val()
+            }
+
+            if($("#confirm").is(":checked")){//选中
+                //提交申请
+                $.ajax({
+                    // 异步方式
+                    url:  '/user/register',
+                    async: true,
+                    type: "post",
+                    datatype: 'json',
+                    contentType:"application/json",//这里要加上这个头
+                    data: JSON.stringify(user),
+                    success: function (result) {
+                        if(result.code == 0){
+                            layer.msg('提交审核中，请耐心等候', {icon: 1});
+                            //getList(1);
+                        }
+                    }
+                });
+            }else{
+                layer.msg('若注册，需同意注册声明', {icon: 0});
+			}
+        })
+	</script>
+</div>
+<!-- end -->
+</body>
+</html>

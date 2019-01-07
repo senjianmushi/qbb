@@ -1,0 +1,201 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<head th:fragment="headCss">
+    <meta charset="utf-8">
+    <title>Simplify Admin-</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/bootstrap-3.3.4.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
+    <!-- Morris -->
+    <link th:href="@{../css/admin/morris.css}" rel="stylesheet"/>
+    <!-- Animate -->
+    <link th:href="@{../css/admin/animate.min.css}" rel="stylesheet">
+    <!-- Owl Carousel -->
+    <link th:href="@{../css/admin/owl.carousel.min.css}" rel="stylesheet">
+    <link th:href="@{../css/admin/owl.theme.default.min.css}" rel="stylesheet">
+    <!-- Simplify -->
+    <link th:href="@{../css/admin/simplify.css}" rel="stylesheet">
+
+
+
+    <!-- Le javascript
+================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+
+    <!-- Jquery -->
+    <!--<script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>-->
+    <script src="/js/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <!--<script src="http://www.jq22.com/jquery/bootstrap-3.3.4.js"></script>-->
+    <script src="/plugin/bootstrap/bootstrap.min.js"></script>
+
+    <!-- Flot -->
+    <script th:src='@{/js/admin/jquery.flot.min.js}'></script>
+
+    <!-- Slimscroll -->
+    <script th:src='@{/js/admin/jquery.slimscroll.min.js}'></script>
+
+    <!-- Morris -->
+    <script th:src='@{/js/admin/rapheal.min.js}'></script>
+    <script th:src='@{/js/admin/morris.min.js}'></script>
+
+    <!-- Sparkline -->
+    <script th:src='@{/js/admin/sparkline.min.js}'></script>
+
+    <!-- Popup Overlay -->
+    <script th:src='@{/js/admin/jquery.popupoverlay.min.js}'></script>
+
+    <!-- Easy Pie Chart -->
+    <script th:src='@{/js/admin/jquery.easypiechart.min.js}'></script>
+
+    <!-- Sortable -->
+    <script th:src='@{/js/admin/uncompressed/jquery.sortable.js}'></script>
+
+    <!-- Owl Carousel -->
+    <script th:src='@{/js/admin/owl.carousel.min.js}'></script>
+
+    <!-- Modernizr -->
+    <script th:src='@{/js/admin/modernizr.min.js}'></script>
+
+    <!-- Simplify -->
+    <script th:src="@{/js/admin/simplify/simplify.js}"></script>
+    <!--<script th:src="@{../js/admin/simplify/simplify_dashboard.js}"></script>-->
+
+    <script>
+
+        // $(function()	{
+            // alert("lhj");
+        //     $('.chart').easyPieChart({
+        //         easing: 'easeOutBounce',
+        //         size: '140',
+        //         lineWidth: '7',
+        //         barColor: '#7266ba',
+        //         onStep: function(from, to, percent) {
+        //             $(this.el).find('.percent').text(Math.round(percent));
+        //         }
+        //     });
+        //
+        //     $('.sortable-list').sortable();
+        //
+        //     $('.todo-checkbox').click(function()	{
+        //         var _activeCheckbox = $(this).find('input[type="checkbox"]');
+        //         if(_activeCheckbox.is(':checked'))	{
+        //             $(this).parent().addClass('selected');
+        //         }else	{
+        //             $(this).parent().removeClass('selected');
+        //         }
+        //     });
+        //
+        //  });
+    </script>
+
+</head>
+
+<!-- sidebar-right -->
+<header class="top-nav" th:fragment="copy">
+    <div class="top-nav-inner">
+        <div class="nav-header">
+            <button type="button" class="navbar-toggle pull-left sidebar-toggle" id="sidebarToggleSM">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a href="/view/adminIndex" class="brand">
+                <i class="fa fa-database"></i><span class="brand-name">诚信档案馆</span>
+            </a>
+        </div>
+        <div class="nav-container">
+            <button type="button" class="navbar-toggle pull-left sidebar-toggle" id="sidebarToggleLG">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <!-- 搜索框 -->
+            <ul class="nav-notification">
+                <li class="search-list">
+                    <div class="search-input-wrapper">
+                        <div class="search-input">
+                            <input type="text" class="form-control input-sm inline-block">
+                            <a href="#" class="input-icon text-normal"><i class="ion-ios7-search-strong"></i></a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <div class="pull-right m-right-sm">
+                <!-- 头像 -->
+                <div class="user-block hidden-xs">
+                    <a href="#" id="userToggle" data-toggle="dropdown">
+                        <img th:src="@{/img/admin/profile/profile1.jpg}" alt="" class="img-circle inline-block user-profile-pic">
+                        <div class="user-detail inline-block">
+                            杨铭隐
+                            <i class="fa fa-angle-down"></i>
+                        </div>
+                    </a>
+                    <div class="panel border dropdown-menu user-panel">
+                        <div class="panel-body paddingTB-sm">
+                            <ul>
+                                <li>
+                                    <a href="profile.html">
+                                        <i class="fa fa-edit fa-lg"></i><span class="m-left-xs">我的资料</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="inbox.html">
+                                        <i class="fa fa-inbox fa-lg"></i><span class="m-left-xs">修改密码</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/loginout">
+                                        <i class="fa fa-power-off fa-lg"></i><span class="m-left-xs">登出</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- 提醒 -->
+                <ul class="nav-notification">
+                    <li>
+                        <a href="#" data-toggle="dropdown"><i class="fa fa-bell fa-lg"></i></a>
+                        <span class="badge badge-info bounceIn animation-delay6 active">4</span>
+                        <ul class="dropdown-menu notification dropdown-3 pull-right">
+                            <li><a href="#">你有5条信息要审核</a></li>
+                            <li>
+                                <a href="#">
+												<span class="notification-icon bg-success">
+													<i class="fa fa-usd"></i>
+												</span>
+                                    <span class="m-left-xs">黑名单审查</span>
+                                    <span class="time text-muted">2条</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#">
+												<span class="notification-icon bg-success">
+													<i class="fa fa-plus"></i>
+												</span>
+                                    <span class="m-left-xs">注册用户审核</span>
+                                    <span class="time text-muted">1条</span>
+                                </a>
+                            </li>
+                            <li><a href="#">查看更多</a></li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div><!-- ./top-nav-inner -->
+</header>
+</body>
+
+</html>

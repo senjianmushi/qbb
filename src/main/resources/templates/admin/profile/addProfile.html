@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<!-- 引用公共的foot页面模块 -->
+<header  th:replace="admin/common/head :: headCss"> </header>
+<link rel="stylesheet" type="text/css" href="/plugin/webuploader/css/bootstrap-theme.min.css">
+<link rel="stylesheet" type="text/css" href="/plugin/webuploader/css/style.css">
+<link rel="stylesheet" type="text/css" href="/plugin/webuploader/css/demo.css">
+<link rel="stylesheet" type="text/css" href="/plugin/webuploader/webuploader-0.1.5/webuploader.css">
+
+<body class="overflow-hidden">
+<div class="wrapper preload">
+
+    <!-- 引用公共的头部页面及css样式 -->
+    <header id="head" th:replace="admin/common/head :: copy" > </header>
+    <!-- 引用公共的左侧菜单页面模块 -->
+    <aside id="navleft" th:replace="admin/common/navLeft :: copy" > </aside>
+
+    <!-- 主页内容-开始 -->
+    <div class="main-container">
+        <div class="">
+            <div class="col-md-12">
+                <div class="smart-widget">
+                    <div class="smart-widget-header">
+                        黑名单信息添加
+                        <span class="smart-widget-option">
+                        <span class="refresh-icon-animated">
+                            <i class="fa fa-circle-o-notch fa-spin"></i>
+                        </span>
+                        <a href="#" class="widget-toggle-hidden-option">
+                            <i class="fa fa-cog"></i>
+                        </a>
+                        <a href="#" class="widget-collapse-option" data-toggle="collapse">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a href="#" class="widget-refresh-option">
+                            <i class="fa fa-refresh"></i>
+                        </a>
+                        <a href="#" class="widget-remove-option">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </span>
+                    </div>
+                    <div class="smart-widget-inner">
+                        <div class="smart-widget-hidden-section">
+                            <ul class="widget-color-list clearfix">
+                                <li style="background-color:#20232b;" data-color="widget-dark"></li>
+                                <li style="background-color:#4c5f70;" data-color="widget-dark-blue"></li>
+                                <li style="background-color:#23b7e5;" data-color="widget-blue"></li>
+                                <li style="background-color:#2baab1;" data-color="widget-green"></li>
+                                <li style="background-color:#edbc6c;" data-color="widget-yellow"></li>
+                                <li style="background-color:#fbc852;" data-color="widget-orange"></li>
+                                <li style="background-color:#e36159;" data-color="widget-red"></li>
+                                <li style="background-color:#7266ba;" data-color="widget-purple"></li>
+                                <li style="background-color:#f5f5f5;" data-color="widget-light-grey"></li>
+                                <li style="background-color:#fff;" data-color="reset"></li>
+                            </ul>
+                        </div>
+                        <div class="smart-widget-body">
+                            <form class="no-margin" id="formValidate2" data-validate="parsley" novalidate="">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">姓名</label>
+                                            <input type="text" placeholder="姓名" id="name" class="form-control input-sm" data-parsley-required="true">
+                                        </div>
+                                    </div><!-- /.col -->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">身份证号码</label>
+                                            <input type="text" placeholder="身份证号码" id="identityId" class="form-control input-sm" data-parsley-required="true" data-parsley-type="url">
+                                        </div>
+                                    </div><!-- /.col -->
+                                </div><!-- /.row -->
+
+                                <div class="form-group">
+                                    <label class="control-label">描述</label>
+                                    <textarea class="form-control" placeholder="描述内容" id="describes" rows="3" data-parsley-required="true"></textarea>
+                                </div><!-- /form-group -->
+                                <div class="form-group">
+                                    <label class="control-label">备注</label>
+                                    <textarea class="form-control" placeholder="备注内容" id="comment" rows="3" data-parsley-required="true"></textarea>
+                                </div><!-- /form-group -->
+
+                                <div class="form-group">
+                                    <label class="control-label">证据图片</label>
+
+                                    <div id="uploader" class="wu-example" style="border: 1px">
+                                        <div class="queueList">
+                                            <div id="dndArea" class="placeholder">
+                                                <div id="filePicker"></div>
+                                                <p>或将照片拖到这里</p>
+                                            </div>
+                                        </div>
+                                        <div class="statusBar" style="display:none">
+                                            <div class="progress">
+                                                <span class="text">0%</span>
+                                                <span class="percentage"></span>
+                                            </div>
+                                            <div class="info"></div>
+                                            <div class="btns">
+                                                <!--<div class="uploadBtn">开始上传</div>-->
+                                                <div id="filePicker2"></div>
+                                                <input type="hidden" id="picUrls">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div><!-- /form-group -->
+
+                                <div class="text-right m-top-md">
+                                    <input type="button" class="btn btn-info" id="btnAdd" value="提交审核"/>
+                                    <input type="button" class="btn btn-default" value="删除"/>
+                                </div>
+                            </form>
+                        </div>
+                    </div><!-- ./smart-widget-inner -->
+                </div><!-- ./smart-widget -->
+            </div>
+
+
+        </div><!-- ./padding-md -->
+    </div><!-- /main-container -->
+
+    <!-- 引用公共的foot页面模块 -->
+    <footer th:replace="admin/common/foot :: copy" > </footer>
+</div><!-- /wrapper -->
+<!-- 主页内容-结束 -->
+<a href="#" class="scroll-to-top hidden-print"><i class="fa fa-chevron-up fa-lg"></i></a>
+<script type="text/javascript" th:src="@{/plugin/webuploader/webuploader-0.1.5/webuploader.js}"></script>
+<script>
+    window.webuploader = {
+        config:{
+            thumbWidth: 100, //缩略图宽度，可省略，默认为110
+            thumbHeight: 100, //缩略图高度，可省略，默认为110
+            wrapId: 'uploader', //必填
+            fileVal: 'file'
+        },
+        //处理客户端新文件上传时，需要调用后台处理的地址, 必填
+        uploadUrl: '/employee/uploadEmployeePic',
+        //处理客户端原有文件更新时的后台处理地址，必填
+        updateUrl: '/employee/uploadEmployeePic',
+        //当客户端原有文件删除时的后台处理地址，必填
+        removeUrl: './filedel.php',
+        //初始化客户端上传文件，从后台获取文件的地址, 可选，当此参数为空时，默认已上传的文件为空
+        initUrl: '',
+    }
+</script>
+<script type="text/javascript" th:src="@{/plugin/webuploader/webuploader-0.1.5/extend-webuploader.js}"></script>
+<script src="/plugin/layer/layer.js"></script>
+<script type="text/javascript" th:src="@{/js/admin/profile/addProfile.js}"></script>
+
+
+</body>
+</html>

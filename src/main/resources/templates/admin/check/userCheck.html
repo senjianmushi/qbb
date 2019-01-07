@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<!-- 引用公共的foot页面模块 -->
+<header  th:replace="admin/common/head :: headCss"> </header>
+<link rel="stylesheet" type="text/css" href="/plugin/webuploader/css/bootstrap-theme.min.css">
+<link rel="stylesheet" type="text/css" href="/plugin/webuploader/css/style.css">
+<link rel="stylesheet" type="text/css" href="/plugin/webuploader/css/demo.css">
+<link rel="stylesheet" type="text/css" href="/plugin/webuploader/webuploader-0.1.5/webuploader.css">
+
+<body style="margin-top:0px">
+
+<!-- 主页内容-开始 -->
+<div class="smart-widget">
+    <div class="smart-widget-inner">
+        <div class="smart-widget-body">
+            <form class="margin" id="formValidate2" data-validate="parsley" novalidate="">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">用户名</label>
+                            <input type="text" placeholder="用户名" id="username" th:value="${user.username}"
+                                   class="form-control input-sm" data-parsley-required="true" disabled="disabled">
+                        </div>
+                    </div><!-- /.col -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">公司名称</label>
+                            <input type="text" placeholder="公司名称" id="identityId" th:value="${user.name}"
+                                   class="form-control input-sm" data-parsley-required="true" data-parsley-type="url" disabled="disabled">
+                        </div>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">邮箱</label>
+                            <input type="text" placeholder="邮箱" id="email" th:value="${user.email}"
+                                   class="form-control input-sm" data-parsley-required="true" disabled="disabled">
+                        </div>
+                    </div><!-- /.col -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">电话</label>
+                            <input type="text" placeholder="电话" id="telephone" th:value="${user.telephone}"
+                                   class="form-control input-sm" data-parsley-required="true" data-parsley-type="url" disabled="disabled">
+                        </div>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+
+                <div class="form-group">
+                    <label class="control-label">公司证明</label>
+                    <div  class="form-control" style="height:auto">
+                        <img  th:src="${user.docUrl}"  style="" th:onclick="watchPic('${user.docUrl}')">
+                    </div>
+                </div><!-- /form-group -->
+                <div style="text-align:right ;margin-top: 5px;margin-bottom: 5px">
+                    <input type="hidden" id="userId" th:value="${user.id}" />
+                    <input type="button" id="submitSuccess" class="btn btn-primary" th:onclick="check('1')"  value="审核通过">
+                    <input type="button" id="submitFail" class="btn btn-primary" th:onclick="check('-1')" value="审核不通过">
+                </div>
+            </form>
+        </div>
+    </div><!-- ./smart-widget-inner -->
+</div><!-- ./smart-widget -->
+
+
+
+<!-- 主页内容-结束 -->
+<a href="#" class="scroll-to-top hidden-print"><i class="fa fa-chevron-up fa-lg"></i></a>
+<script src="/plugin/layer/layer.js"></script>
+<script type="text/javascript" th:src="@{/js/admin/profile/addProfile.js}"></script>
+<script>
+    function watchPic(url) {
+        //页面层
+        layer.open({
+            type: 2,
+            title: '图片详细信息',
+            maxmin: true,
+            shadeClose: true, //点击遮罩关闭层
+            area: ['1200px', '550px'],
+            content: "/view/picDetail?url=" + url
+        });
+    }
+
+    function check(checkStatus){
+        var userId = $("#userId").val();
+        var msg ="";
+        if(checkStatus == 1){
+            msg = "确定审核通过么"
+        }else{
+            msg = "确定审核不通过么"
+        }
+        layer.confirm(msg, {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            var employee={
+                id: userId,
+                checkStatus: checkStatus
+            }
+            $.ajax({
+                // 异步方式
+                url:  '/user/updateUser',
+                async: true,
+                type: "post",
+                datatype: 'json',
+                contentType:"application/json",//这里要加上这个头
+                data: JSON.stringify(employee),
+                success: function (result) {
+                    if (result != null) {
+                        if(result.code == 0){
+                            layer.msg('操作成功', {icon: 1});
+                            setTimeout(function(){
+                                var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                                parent.getList(1)
+                                parent.layer.close(index);
+                            }, 1000);
+                        }else{
+                            layer.msg('操作失败', {icon: 0});
+                        }
+                    }
+                }
+            });
+        }, function(){
+
+        });
+    }
+</script>
+
+
+</body>
+</html>

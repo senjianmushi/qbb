@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qbb.cxda.cmm.dao.EmployeeMapper">
+  <resultMap id="BaseResultMap" type="com.qbb.cxda.cmm.entity.Employee">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="identity_id" jdbcType="VARCHAR" property="identityId" />
+    <result column="pic_urls" jdbcType="VARCHAR" property="picUrls" />
+    <result column="describes" jdbcType="VARCHAR" property="describes" />
+    <result column="comment" jdbcType="VARCHAR" property="comment" />
+    <result column="check_status" jdbcType="TINYINT" property="checkStatus" />
+    <result column="is_delete" jdbcType="TINYINT" property="isDelete" />
+    <result column="creater" jdbcType="INTEGER" property="creater" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, identity_id, pic_urls, describes, comment, check_status, is_delete, creater,
+    create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from employee
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from employee
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qbb.cxda.cmm.entity.Employee">
+    insert into employee (id, name, identity_id, 
+      pic_urls, describes, comment,
+      check_status, is_delete, creater, 
+      create_time, update_time)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{identityId,jdbcType=VARCHAR}, 
+      #{picUrls,jdbcType=VARCHAR}, #{describes,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR},
+      #{checkStatus,jdbcType=TINYINT}, #{isDelete,jdbcType=TINYINT}, #{creater,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.qbb.cxda.cmm.entity.Employee"
+          useGeneratedKeys="true" keyProperty="id">
+    insert into employee
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="identityId != null">
+        identity_id,
+      </if>
+      <if test="picUrls != null">
+        pic_urls,
+      </if>
+      <if test="describes != null">
+        describes,
+      </if>
+      <if test="comment != null">
+        comment,
+      </if>
+      <if test="checkStatus != null">
+        check_status,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+      <if test="creater != null">
+        creater,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="identityId != null">
+        #{identityId,jdbcType=VARCHAR},
+      </if>
+      <if test="picUrls != null">
+        #{picUrls,jdbcType=VARCHAR},
+      </if>
+      <if test="describes != null">
+        #{describes,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null">
+        #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="checkStatus != null">
+        #{checkStatus,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="creater != null">
+        #{creater,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qbb.cxda.cmm.entity.Employee">
+    update employee
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="identityId != null">
+        identity_id = #{identityId,jdbcType=VARCHAR},
+      </if>
+      <if test="picUrls != null">
+        pic_urls = #{picUrls,jdbcType=VARCHAR},
+      </if>
+      <if test="describes != null">
+        describes = #{describes,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null">
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="checkStatus != null">
+        check_status = #{checkStatus,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="creater != null">
+        creater = #{creater,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qbb.cxda.cmm.entity.Employee">
+    update employee
+    set name = #{name,jdbcType=VARCHAR},
+      identity_id = #{identityId,jdbcType=VARCHAR},
+      pic_urls = #{picUrls,jdbcType=VARCHAR},
+      describes = #{describes,jdbcType=VARCHAR},
+      comment = #{comment,jdbcType=VARCHAR},
+      check_status = #{checkStatus,jdbcType=TINYINT},
+      is_delete = #{isDelete,jdbcType=TINYINT},
+      creater = #{creater,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectEmployee" parameterType="com.qbb.cxda.cmm.entity.Employee" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from employee
+    where 1 = 1
+    <if test="name != null and name != ''">
+      and name = #{name,jdbcType=VARCHAR}
+    </if>
+    <if test="identityId != null">
+      and identity_id = #{identityId,jdbcType=VARCHAR}
+    </if>
+    <if test="picUrls != null and picUrls != ''">
+      and pic_urls = #{picUrls,jdbcType=VARCHAR}
+    </if>
+    <if test="describes != null and describes != ''">
+      and describes = #{describes,jdbcType=VARCHAR}
+    </if>
+    <if test="comment != null and comment != ''">
+      and comment = #{comment,jdbcType=VARCHAR}
+    </if>
+    <if test="checkStatus != null  ">
+      and check_status = #{checkStatus,jdbcType=TINYINT}
+    </if>
+    <if test="isDelete != null ">
+      and is_delete = #{isDelete,jdbcType=TINYINT}
+    </if>
+    <if test="creater != null">
+      and creater = #{creater,jdbcType=INTEGER}
+    </if>
+    <if test="createTime != null">
+      and create_time = #{createTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updateTime != null">
+      and update_time = #{updateTime,jdbcType=TIMESTAMP}
+    </if>
+  </select>
+</mapper>
