@@ -6,7 +6,7 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.session.UnknownSessionException;
 import org.apache.shiro.session.mgt.eis.AbstractSessionDAO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
 import org.springframework.util.SerializationUtils;
 
 import java.io.Serializable;
@@ -14,13 +14,13 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-@ComponentScan("com.qbb.cxda.util")
+@Component
 public class RedisSessionDao extends AbstractSessionDAO {
 
-    //@Autowired
-    private JedisUtil jedisUtil = new JedisUtil();
+    @Autowired
+    private JedisUtil jedisUtil;
 
-    private final String SHRIO_SESSION_PREFIX = "innoc-session";
+    private final String SHRIO_SESSION_PREFIX = "crrchz-session";
 
     private byte[] getKey(String key){
         return (SHRIO_SESSION_PREFIX + key).getBytes();

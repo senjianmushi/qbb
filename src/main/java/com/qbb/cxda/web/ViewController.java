@@ -9,11 +9,13 @@ import com.qbb.cxda.cmm.service.EmployeeService;
 import com.qbb.cxda.cmm.service.UserService;
 import com.qbb.cxda.config.PropertiesConfig;
 import com.qbb.cxda.constant.BaseEnums;
+import com.qbb.cxda.util.JedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scripting.bsh.BshScriptUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import redis.clients.jedis.JedisPool;
 
 @Controller
 @RequestMapping("/view")
@@ -26,13 +28,15 @@ public class ViewController {
     @Autowired
     PropertiesConfig propertiesConfig;
 
+    @Autowired
+    private JedisUtil jedisUti;
+
     /**
      * 首页
      * @return
      */
     @RequestMapping("/index")
     public String viewIndex(){
-        String s = "ssss";
         return "index";
     }
 
@@ -42,6 +46,7 @@ public class ViewController {
      */
     @RequestMapping("/login")
     public String viewLogin(){
+        //jedisUti.get(null);
         return "login";
     }
 

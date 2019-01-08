@@ -3,10 +3,12 @@ package com.qbb.cxda.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 @Configuration
+@Component
 public class RedisConfig {
 
     @Value("${spring.redis.host}")
@@ -27,9 +29,10 @@ public class RedisConfig {
     @Value("${spring.redis.password}")
     private String password;
 
-    @Bean
+    @Bean(name = "jedisPool")
     public JedisPool jedisPool() {
         System.out.println("jedisPool的初始化");
+        System.out.println("redis地址：" + host + ":" + port);
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
         jedisPoolConfig.setMaxIdle(maxIdle);
         jedisPoolConfig.setMaxWaitMillis(maxWaitMillis);

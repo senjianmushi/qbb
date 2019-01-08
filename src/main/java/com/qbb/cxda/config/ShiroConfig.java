@@ -2,11 +2,13 @@ package com.qbb.cxda.config;
 
 
 import com.qbb.cxda.base.UserRealm;
+import com.qbb.cxda.cache.RedisCachManger;
 import com.qbb.cxda.session.CustomerSessionManager;
 import com.qbb.cxda.session.RedisSessionDao;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +18,15 @@ import java.util.Map;
 
 @Configuration
 public class ShiroConfig {
+
+
+    /**
+     * shrio的拦截配置
+     * @param defaultWebSecurityManager
+     * @return
+     */
+    @Autowired
+    private RedisSessionDao redisSessionDao;
 
     /**
      * shrio的拦截配置
@@ -35,9 +46,8 @@ public class ShiroConfig {
         fMap.put("/view/login","anon");
         fMap.put("/view/index","anon");
         fMap.put("/dologin","anon");
-        fMap.put("/css/**","anon");
-        fMap.put("/img/**","anon");
-        fMap.put("/js/**","anon");
+        fMap.put("/static/**","anon");
+        fMap.put("/blacklist/**","anon");
         fMap.put("/**","authc");
 //        fMap.put("/all","authc");
 //        fMap.put("/one","authc");
@@ -56,10 +66,12 @@ public class ShiroConfig {
     @Bean(name = "defaultWebSecurityManager")
     public DefaultWebSecurityManager getDefaultWebSecurityManager(
             @Qualifier("userRealm")UserRealm userRealm,
-            @Qualifier("customerSessionManager") CustomerSessionManager customerSessionManager){
+            @Qualifier("customerSessionManager") CustomerSessionManager customerSessionManager,
+            @Qualifier("redisCachManger") RedisCachManger redisCachManger){
         DefaultWebSecurityManager defaultWebSecurityManager=new DefaultWebSecurityManager();
         defaultWebSecurityManager.setRealm(userRealm);
         defaultWebSecurityManager.setSessionManager(customerSessionManager);
+        defaultWebSecurityManager.setCacheManager(redisCachManger);
         return defaultWebSecurityManager;
     }
     @Bean(name = "userRealm")
@@ -71,7 +83,12 @@ public class ShiroConfig {
     public CustomerSessionManager sessionManager(){
         CustomerSessionManager shiroSessionManager = new CustomerSessionManager();
         //这里可以不设置。Shiro有默认的session管理。如果缓存为Redis则需改用Redis的管理
-        shiroSessionManager.setSessionDAO(new RedisSessionDao());
+        shiroSessionManager.setSessionDAO(redisSessionDao);
         return shiroSessionManager;
+    }
+
+    @Bean(name = "redisCachManger")
+    public RedisCachManger redisCachManger(){
+        return new RedisCachManger();
     }
 }
