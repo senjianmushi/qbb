@@ -32,7 +32,8 @@
       #{remarks,jdbcType=VARCHAR}, #{creater,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updater,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.qbb.cxda.cmm.entity.MapUserRole">
+  <insert id="insertSelective" parameterType="com.qbb.cxda.cmm.entity.MapUserRole"
+          useGeneratedKeys="true" keyProperty="id">
     insert into map_user_role
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -125,4 +126,13 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectObjectByUserId"
+          parameterType="java.lang.Integer"
+          resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from map_user_role
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
 </mapper>

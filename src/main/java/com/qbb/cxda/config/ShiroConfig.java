@@ -1,6 +1,7 @@
 package com.qbb.cxda.config;
 
 
+import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import com.qbb.cxda.base.UserRealm;
 import com.qbb.cxda.cache.RedisCachManger;
 import com.qbb.cxda.session.CustomerSessionManager;
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Configuration
@@ -42,12 +44,22 @@ public class ShiroConfig {
         //授权拦截返回页面
         shiroFilterFactoryBean.setUnauthorizedUrl("/view/login");
         //拦截页面
-        Map<String,String> fMap=new HashMap<>();
+        Map<String,String> fMap=new LinkedHashMap<>();
+        fMap.put("/","anon");
+        fMap.put("/static/**","anon");
+        fMap.put("/css/**","anon");
+        fMap.put("/img/**","anon");
+        fMap.put("/js/**","anon");
+        fMap.put("/plugin/**","anon");
+        fMap.put("/download/**","anon");
         fMap.put("/view/login","anon");
+        fMap.put("/view/register","anon");
         fMap.put("/view/index","anon");
         fMap.put("/dologin","anon");
-        fMap.put("/static/**","anon");
+        fMap.put("/user/register","anon");
+        fMap.put("/user/uploadDoc","anon");
         fMap.put("/blacklist/**","anon");
+        fMap.put("/userdoc/**","anon");
         fMap.put("/**","authc");
 //        fMap.put("/all","authc");
 //        fMap.put("/one","authc");
@@ -70,6 +82,7 @@ public class ShiroConfig {
             @Qualifier("redisCachManger") RedisCachManger redisCachManger){
         DefaultWebSecurityManager defaultWebSecurityManager=new DefaultWebSecurityManager();
         defaultWebSecurityManager.setRealm(userRealm);
+        //设置session的管理器
         defaultWebSecurityManager.setSessionManager(customerSessionManager);
         defaultWebSecurityManager.setCacheManager(redisCachManger);
         return defaultWebSecurityManager;
@@ -90,5 +103,11 @@ public class ShiroConfig {
     @Bean(name = "redisCachManger")
     public RedisCachManger redisCachManger(){
         return new RedisCachManger();
+    }
+
+    //这里是为了能在html页面引用shiro标签，上面两个函数必须添加，不然会报错
+    @Bean(name = "shiroDialect")
+    public ShiroDialect shiroDialect() {
+        return new ShiroDialect();
     }
 }

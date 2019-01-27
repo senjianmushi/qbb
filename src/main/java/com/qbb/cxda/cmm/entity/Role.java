@@ -13,4 +13,7 @@ public class Role {
     private Date createTime;
     private Integer updater;
     private Date updateTime;
+
+    public static final Integer ROLE_ADMIN = 1;//管理员
+    public static final Integer ROLE_MEMBER= 2;//普通用户
 }

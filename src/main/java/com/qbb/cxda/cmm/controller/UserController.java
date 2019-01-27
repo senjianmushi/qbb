@@ -3,21 +3,28 @@ package com.qbb.cxda.cmm.controller;
 import com.github.pagehelper.PageInfo;
 import com.qbb.cxda.base.PageInfoBean;
 import com.qbb.cxda.base.ResultObject;
+import com.qbb.cxda.cmm.entity.MapUserRole;
+import com.qbb.cxda.cmm.entity.Role;
 import com.qbb.cxda.cmm.entity.User;
 import com.qbb.cxda.cmm.response.UserListResponse;
+import com.qbb.cxda.cmm.service.MapUserRoleService;
 import com.qbb.cxda.cmm.service.UserService;
 import com.qbb.cxda.config.PropertiesConfig;
 import com.qbb.cxda.constant.BaseEnums;
 import com.qbb.cxda.util.CommonUtil;
+import com.qbb.cxda.util.DateUtil;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.beans.Transient;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 @RestController
 @RequestMapping("user")
@@ -27,6 +34,9 @@ public class UserController {
     private UserService userService;
     @Autowired
     PropertiesConfig propertiesConfig;
+
+    @Autowired
+    private MapUserRoleService mapUserRoleService;
 
     /**
      * 用户插入
@@ -45,12 +55,20 @@ public class UserController {
     }
 
     @PostMapping("updateUser")
+    @Transient
     public ResultObject updateUser(@RequestBody User user){
         if(user == null || CommonUtil.ifEmpty(user.getId())){
             return new ResultObject(BaseEnums.PARAM_ERROR,"传入参数出错");
         }
         try{
             userService.updateUser(user);
+            // 审核通过
+            if(user.getCheckStatus().equals((byte) 1)){
+                MapUserRole mapUserRole = new MapUserRole();
+                mapUserRole.setRoleId(Role.ROLE_MEMBER);//普通用户
+                mapUserRole.setUserId(user.getId());
+                mapUserRoleService.insertObject(mapUserRole);
+            }
         }catch (Exception e){
             e.printStackTrace();
             return new ResultObject(BaseEnums.UNEXPECTED_ERROR,"操作失败");
@@ -77,16 +95,16 @@ public class UserController {
         return new ResultObject(BaseEnums.SUCCESS);
     }
 
-    /**
-     * 文档上传
-     * @param file
-     * @return
-     */
-    @PostMapping("uploadDoc")
-    public String uploadDoc(File file){
-        String filePath="123";
-        return filePath;
-    }
+//    /**
+//     * 文档上传
+//     * @param file
+//     * @return
+//     */
+//    @PostMapping("uploadDoc")
+//    public String uploadDoc(File file){
+//        String filePath="123";
+//        return filePath;
+//    }
 
     /**
      * 分页查询用户在线用户列表
@@ -128,12 +146,62 @@ public class UserController {
     @PostMapping("register")
     public ResultObject Register(@RequestBody User user){
         try{
+            String password = user.getPassword();
+            // 生成6位数的随机数
+            String salt = String.valueOf(new Random().nextInt(999999));
+            user.setSalt(salt);
+            Md5Hash md5Hash = new Md5Hash(password,salt);
+            String passwordMd5 = md5Hash.toString();
+            user.setPassword(passwordMd5);
             userService.register(user);
         }catch (Exception e){
             e.printStackTrace();
             return new ResultObject(BaseEnums.UNEXPECTED_ERROR,"操作失败");
         }
         return new ResultObject(BaseEnums.SUCCESS);
+    }
+
+    /**
+     * 公司信息文档
+     * @param mf
+     * @return
+     */
+    @PostMapping("uploadDoc")
+    public ResultObject uploadPic( @RequestParam(value="file") MultipartFile mf){
+        if(mf == null ){
+            return new ResultObject(BaseEnums.PARAM_ERROR,"上传的文件有误");
+        }
+        //获取源文件
+        String filename = mf.getOriginalFilename();
+        String[] names=filename.split("\\.");
+        String tempNum=(int)(Math.random()*100000)+"";
+        Date now = new Date();
+        //文件以年/月/文件名形式保存：/2018/12/xxxxx.jpg
+        String dir = propertiesConfig.uploadNewsPath + "userdoc/"+
+                DateUtil.format(now,DateUtil.Pattern.NONE_YEAR)+"/"+
+                DateUtil.format(now,DateUtil.Pattern.NONE_MONTH)+"/";
+        File dirFile = new File(dir);
+        if(!dirFile.exists()){
+            dirFile.mkdirs();
+        }
+        String uploadFileName =    "userdoc/" + DateUtil.format(now,DateUtil.Pattern.NONE_YEAR)+"/"+
+                DateUtil.format(now,DateUtil.Pattern.NONE_MONTH)+"/"
+                +DateUtil.format(now,DateUtil.Pattern.NONE_DATETIME_SSS)+"."+names[names.length-1];
+        File targetFile = new File (propertiesConfig.uploadNewsPath,uploadFileName);//目标文件
+
+        //开始从源文件拷贝到目标文件
+        //传图片一步到位
+        try {
+            mf.transferTo(targetFile);
+        } catch (IllegalStateException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        String url = propertiesConfig.prixPath + uploadFileName;
+        return new ResultObject(BaseEnums.SUCCESS,uploadFileName);
     }
 
 }

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <html lang="en">
 
 <!-- 引用公共的foot页面模块 -->
@@ -24,15 +25,15 @@
                         Welecome back
                     </div>
                     <div class="page-sub-header">
-                        杨铭隐
+                        [[${session.user.name}]]<b shiro:hasRole="guest"> ： 您的申请还没通过，请耐心等待一段时间 </b>
                     </div>
                 </div>
-                <div class="col-sm-6 text-right text-left-sm p-top-sm">
+                <div shiro:hasAnyRoles="admin,member" class="col-sm-6 text-right text-left-sm p-top-sm">
                     <div class="btn-group">
-                        <input type="text" class="form-control input-sm" placeholder="姓名" value="林华津" id="name">
+                        <input type="text" class="form-control input-sm" placeholder="姓名" value="" id="name">
                     </div>
                     <div class="btn-group">
-                        <input type="text" class="form-control input-sm" placeholder="身份证信息" value="330381199007164174" id="identityId">
+                        <input type="text" class="form-control input-sm" placeholder="身份证信息" value="" id="identityId">
                     </div>
 
                     <a class="btn btn-default" id="btnSearch" style="padding: 3px 6px 3px 6px"><i class="fa fa-search"></i></a>
@@ -159,8 +160,13 @@
                     // $("#visiblePages").val("7");//显示的页码数
                     // $("#countindex").val(result.data.pages);//总页数
                     // loadpage();
+
+
                     console.log("result.data.data")
                     console.log(result.data.data);
+                    if(result.data.data.length == 0){
+                        layer.msg('当前没有数据', {icon: 1});
+                    }
                     $('#tplView').html(juicer(tpl, {employeelist:result.data.data}));//输出
                 }
             }

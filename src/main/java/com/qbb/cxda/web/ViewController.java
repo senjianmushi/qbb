@@ -10,12 +10,19 @@ import com.qbb.cxda.cmm.service.UserService;
 import com.qbb.cxda.config.PropertiesConfig;
 import com.qbb.cxda.constant.BaseEnums;
 import com.qbb.cxda.util.JedisUtil;
+import com.qbb.cxda.util.SerializeUtil;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scripting.bsh.BshScriptUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import redis.clients.jedis.JedisPool;
+
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/view")
@@ -63,7 +70,16 @@ public class ViewController {
      * @return
      */
     @RequestMapping("/adminIndex")
-    public String viewAdminIndex(){return "admin/index";}
+    public ModelAndView viewAdminIndex() throws IOException, ClassNotFoundException {
+
+        Subject subject= SecurityUtils.getSubject();
+        Session session = subject.getSession();
+        byte[] bytes = (byte[]) subject.getPrincipal();
+        User user=  (User) SerializeUtil.deserialize(bytes);
+        ModelAndView modelAndView = new ModelAndView("/admin/index");
+        session.setAttribute("user",user);
+        return modelAndView;
+    }
 
     /**
      * 黑名单界面

@@ -43,8 +43,9 @@
 								<!--用来存放item-->
 								<div id="fileList" class="uploader-list"></div>
 								<div id="filePicker">选择图片</div>
+
 							</div>
-							<input type="hidden" value="" id="docUrl">
+							<input type="text" value="" id="docUrl">
 						</div>
 					</div>
 					<div class="col-md-6">
@@ -59,18 +60,15 @@
 						</div>
 						<div class="control margin">
 							<input id="confirm" type="checkbox">同意
-							<a class="modalLink" href="#" data-toggle="tooltip" data-html="true" data-placement="top" title="" data-original-title="注册声明
-								一、用户注册、登陆，视为接受本协议的约束。
-								二、用户承诺遵守国家的法律法规及部门规章
-								三、用户承诺遵守清白白相关准则.
-								四、用户注册时需要提交公司的盖章的照片。
-								五、用户侵犯第三人的知识产权，由该用户承担全部法律责任。
-
-								版权声明
-								jQuery插件库（www.jq22.com）站内所有涉及插件及代码由会员上传而来，jQuery插件库不拥有此类插件及代码的版权
-								jQuery插件库作为jQuery插件网络服务提供者，对非法转载，盗版行为的发生不具备充分的监控能力。但是当版权拥有者提出侵权指控并出示充分的版权证明材料时，jQuery插件库负有移除盗版和非法转载作品以及停止继续传播的义务。jQuery插件库在满足前款条件下采取移除等相应措施后不为此向原发布人承担违约责任或其他法律责任，包括不承担因侵权指控不成立而给原发布人带来损害的赔偿责任。
-								如果版权拥有者发现自己作品被侵权，请及时向jQuery插件库提出权利通知，并将姓名、电话、身份证明、权属证明、具体链接（URL）及详细侵权情况描述发往版权举报专用通道，jQuery插件库在收到相关举报文件后，在3个工作日内移除相关涉嫌侵权的内容
-								">《注册声明》《版权声明》
+							<a class="modalLink" data-toggle="popover" data-placement="left"
+							   data-trigger="hover"
+							   data-html="true" title="<b align='left' >注册声明 </br>
+								一、用户注册、登陆，视为接受清白白的约束。</br>
+								二、用户承诺遵守国家的法律法规及部门规章 </br>
+								三、用户注册时需要提交公司的盖章的照片,模板请看附件。 </br>
+								四、用户侵犯第三人的知识产权，由该用户承担全部法律责任。 </br></b>
+								">《注册声明》
+								<a id="template_download" href="/download/qbb_template_download.docx">《模板下载》</a>
 							</a>
 						</div>
 					</div>
@@ -86,6 +84,7 @@
 	<script th:src="@{/js/jquery.min.js}" type="text/javascript" ></script>
 	<script src="/plugin/layer/layer.js"></script>
 	<script type="text/javascript" th:src="@{/plugin/webuploader/webuploader-0.1.5/webuploader.js}"></script>
+	<script type="text/javascript" th:src="@{/plugin/bootstrap/bootstrap.js}"></script>
 	<script>
         var $ = jQuery,
             $list = $('#fileList'),
@@ -106,7 +105,7 @@
             swf:  '/plugin/webuploader-0.1.5/Uploader.swf',
 
             // 文件接收服务端。
-            server: '/employee/uploadEmployeePic',
+            server: '/user/uploadDoc',
 
             // 选择文件的按钮。可选。
             // 内部根据当前运行是创建，可能是input元素，也可能是flash.
@@ -138,7 +137,6 @@
                     $img.replaceWith('<span>不能预览</span>');
                     return;
                 }
-
                 $img.attr( 'src', src );
             }, thumbnailWidth, thumbnailHeight );
         });
@@ -154,7 +152,6 @@
                     .appendTo( $li )
                     .find('span');
             }
-
             $percent.css( 'width', percentage * 100 + '%' );
         });
 
@@ -177,7 +174,6 @@
             if ( !$error.length ) {
                 $error = $('<div class="error"></div>').appendTo( $li );
             }
-
             $error.text('上传失败');
         });
 
@@ -198,6 +194,7 @@
             }
 
             if($("#confirm").is(":checked")){//选中
+                alert("开始申请");
                 //提交申请
                 $.ajax({
                     // 异步方式
@@ -218,6 +215,9 @@
                 layer.msg('若注册，需同意注册声明', {icon: 0});
 			}
         })
+
+		//声明
+        $("[data-toggle='popover']").popover();
 	</script>
 </div>
 <!-- end -->

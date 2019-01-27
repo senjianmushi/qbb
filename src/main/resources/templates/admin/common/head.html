@@ -1,5 +1,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <body>
 
 <head th:fragment="headCss">
@@ -135,23 +136,28 @@
                     <a href="#" id="userToggle" data-toggle="dropdown">
                         <img th:src="@{/img/admin/profile/profile1.jpg}" alt="" class="img-circle inline-block user-profile-pic">
                         <div class="user-detail inline-block">
-                            杨铭隐
+                            [[${session.user.name}]]：
+                            <!--<input type="text" name="openid" id="openid" th:value="${session.name}"/>-->
+                            <!--<input type="hidden" name="xxx" id="xxx" th:value="${session.user.name}"/>-->
+                            <b shiro:hasRole="admin"> 管理员 </b>
+                            <b shiro:hasRole="member"> 会员 </b>
+                            <b shiro:hasRole="guest"> 审核未通过 </b>
                             <i class="fa fa-angle-down"></i>
                         </div>
                     </a>
                     <div class="panel border dropdown-menu user-panel">
                         <div class="panel-body paddingTB-sm">
                             <ul>
-                                <li>
-                                    <a href="profile.html">
-                                        <i class="fa fa-edit fa-lg"></i><span class="m-left-xs">我的资料</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="inbox.html">
-                                        <i class="fa fa-inbox fa-lg"></i><span class="m-left-xs">修改密码</span>
-                                    </a>
-                                </li>
+                                <!--<li>-->
+                                    <!--<a href="profile.html">-->
+                                        <!--<i class="fa fa-edit fa-lg"></i><span class="m-left-xs">我的资料</span>-->
+                                    <!--</a>-->
+                                <!--</li>-->
+                                <!--<li>-->
+                                    <!--<a href="inbox.html">-->
+                                        <!--<i class="fa fa-inbox fa-lg"></i><span class="m-left-xs">修改密码</span>-->
+                                    <!--</a>-->
+                                <!--</li>-->
                                 <li>
                                     <a href="/loginout">
                                         <i class="fa fa-power-off fa-lg"></i><span class="m-left-xs">登出</span>
@@ -162,7 +168,7 @@
                     </div>
                 </div>
                 <!-- 提醒 -->
-                <ul class="nav-notification">
+                <ul shiro:hasAnyRoles="xxx"  class="nav-notification" >
                     <li>
                         <a href="#" data-toggle="dropdown"><i class="fa fa-bell fa-lg"></i></a>
                         <span class="badge badge-info bounceIn animation-delay6 active">4</span>
@@ -170,9 +176,9 @@
                             <li><a href="#">你有5条信息要审核</a></li>
                             <li>
                                 <a href="#">
-												<span class="notification-icon bg-success">
-													<i class="fa fa-usd"></i>
-												</span>
+                                    <span class="notification-icon bg-success">
+                                        <i class="fa fa-usd"></i>
+                                    </span>
                                     <span class="m-left-xs">黑名单审查</span>
                                     <span class="time text-muted">2条</span>
                                 </a>
@@ -180,9 +186,9 @@
 
                             <li>
                                 <a href="#">
-												<span class="notification-icon bg-success">
-													<i class="fa fa-plus"></i>
-												</span>
+                                    <span class="notification-icon bg-success">
+                                        <i class="fa fa-plus"></i>
+                                    </span>
                                     <span class="m-left-xs">注册用户审核</span>
                                     <span class="time text-muted">1条</span>
                                 </a>

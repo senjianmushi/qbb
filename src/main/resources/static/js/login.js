@@ -32,6 +32,6 @@ $('#btnLogin').click(function() {
 })
 
 $('#btnRegister').click(function() {
-    window.location.href="view/register";
+    window.location.href="/view/register";
 })
 

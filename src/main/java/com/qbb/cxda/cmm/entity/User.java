@@ -3,10 +3,13 @@ package com.qbb.cxda.cmm.entity;
 import com.qbb.cxda.constant.BasecConstant;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
-public class User {
+public class User implements Serializable {
+
+    private static final long serialVersionUID = -5809782578272943999L;
     private Integer id;
     private String username;
     private String password;

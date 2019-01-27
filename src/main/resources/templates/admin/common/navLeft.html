@@ -1,5 +1,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <body>
 
 <aside class="sidebar-menu fixed" th:fragment="copy">
@@ -9,7 +10,7 @@
                 <li class="menu-header">
                     Main Menu
                 </li>
-                <li class="bg-palette1">
+                <li shiro:hasAnyRoles="admin,member" class="bg-palette1">
                     <a href="/view/adminIndex">
                         <span class="menu-content block">
                             <span class="menu-icon"><i class="block fa fa-home fa-lg"></i></span>
@@ -20,7 +21,7 @@
                         </span>
                     </a>
                 </li>
-                <li class="bg-palette2">
+                <li shiro:hasAnyRoles="admin,member" class="bg-palette2">
                     <a href="/view/addProfile">
                         <span class="menu-content block">
                             <span class="menu-icon"><i class="block fa fa-desktop fa-lg"></i></span>
@@ -31,22 +32,44 @@
                         </span>
                     </a>
                 </li>
-                <li class="openable bg-palette3">
-                    <a href="#">
+                <li shiro:hasAnyRoles="admin" class="bg-palette2">
+                    <a href="/view/profileManage">
                         <span class="menu-content block">
-                            <span class="menu-icon"><i class="block fa fa-list fa-lg"></i></span>
-                            <span class="text m-left-sm">审核</span>
-                            <span class="submenu-icon"></span>
+                            <span class="menu-icon"><i class="block fa fa-desktop fa-lg"></i></span>
+                            <span class="text m-left-sm">黑名单审核</span>
                         </span>
                         <span class="menu-content-hover block">
-                            Form
+                            Landing
                         </span>
                     </a>
-                    <ul class="submenu bg-palette4">
-                        <li class=""><a href="/view/profileManage"><span class="submenu-label">黑名单审核</span></a></li>
-                        <li><a href="/view/userManage"><span class="submenu-label">会员审核</span></a></li>
-                    </ul>
                 </li>
+                <li shiro:hasAnyRoles="admin" class="bg-palette2">
+                    <a href="/view/userManage">
+                        <span class="menu-content block">
+                            <span class="menu-icon"><i class="block fa fa-desktop fa-lg"></i></span>
+                            <span class="text m-left-sm">会员审核</span>
+                        </span>
+                        <span class="menu-content-hover block">
+                            Landing
+                        </span>
+                    </a>
+                </li>
+                <!--<li class="openable bg-palette3">-->
+                    <!--<a href="#">-->
+                        <!--<span class="menu-content block">-->
+                            <!--<span class="menu-icon"><i class="block fa fa-list fa-lg"></i></span>-->
+                            <!--<span class="text m-left-sm">审核</span>-->
+                            <!--<span class="submenu-icon"></span>-->
+                        <!--</span>-->
+                        <!--<span class="menu-content-hover block">-->
+                            <!--Form-->
+                        <!--</span>-->
+                    <!--</a>-->
+                    <!--<ul class="submenu bg-palette4">-->
+                        <!--<li class=""><a href="/view/profileManage"><span class="submenu-label">黑名单审核</span></a></li>-->
+                        <!--<li><a href="/view/userManage"><span class="submenu-label">会员审核</span></a></li>-->
+                    <!--</ul>-->
+                <!--</li>-->
             </ul>
         </div>
     </div><!-- sidebar-inner -->

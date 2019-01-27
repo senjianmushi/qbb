@@ -1,6 +1,7 @@
 package com.qbb.cxda.cmm.service;
 
-import com.qbb.cxda.cmm.entity.Role;
+import com.qbb.cxda.cmm.entity.MapUserRole;
+
 
 public interface MapUserRoleService {
 
@@ -9,5 +10,7 @@ public interface MapUserRoleService {
      * @param userId
      * @return
      */
-    Role findRoleByUserId(Integer userId);
+    MapUserRole findRoleByUserId(Integer userId);
+
+    int insertObject(MapUserRole mapUserRole);
 }

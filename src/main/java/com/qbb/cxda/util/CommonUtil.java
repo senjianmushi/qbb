@@ -2,6 +2,8 @@ package com.qbb.cxda.util;
 
 import org.apache.shiro.crypto.hash.Md5Hash;
 
+import java.io.*;
+
 public class CommonUtil {
 
     /**
@@ -27,4 +29,7 @@ public class CommonUtil {
         Md5Hash md5Hash = new Md5Hash(password,salt);
         return md5Hash.toString();
     }
+
+
+
 }

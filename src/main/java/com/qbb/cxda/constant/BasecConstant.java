@@ -12,4 +12,6 @@ public interface BasecConstant {
 
     public static Byte TYPE_NOMAL = 0;//未删除
     public static Byte TYPE_MANAGEER = 1;//删除
+
+
 }

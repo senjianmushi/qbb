@@ -2,6 +2,8 @@ package com.qbb.cxda.cmm.dao;
 
 import com.qbb.cxda.cmm.entity.Role;
 
+import java.util.List;
+
 public interface RoleMapper {
     int deleteByPrimaryKey(Integer id);
 
