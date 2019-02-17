@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.qbb.cxda.cmm.dao.UserMapper;
 import com.qbb.cxda.cmm.entity.User;
 import com.qbb.cxda.constant.BasecConstant;
+import com.qbb.cxda.util.CommonUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -57,5 +58,29 @@ public class UserServiceImpl implements UserService {
     @Override
     public User selectUser(User user) {
         return userMapper.selectUserObject(user);
+    }
+
+    @Override
+    public List<User> selectUserList(User user) {
+        return userMapper.selectUserList(user);
+    }
+
+    @Override
+    public byte updatePwd(User user, String oldPwd, String newPwd) {
+        String pwdMd5 = CommonUtil.encryptionMD5(oldPwd,user.getSalt());
+        if(!pwdMd5.equals(user.getPassword())){
+            //原始密码不一致
+            return 0;
+        }else{
+            String newPwdMd5 =  CommonUtil.encryptionMD5(newPwd,user.getSalt());
+            User tempUser = new User(user.getId());
+            tempUser.setPassword(newPwdMd5);
+            int result = userMapper.updateByPrimaryKeySelective(tempUser);
+            if(result >= 0){
+                return 1;
+            }else{
+                return -1;
+            }
+        }
     }
 }

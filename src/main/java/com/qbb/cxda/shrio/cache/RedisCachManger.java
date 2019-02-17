@@ -1,4 +1,4 @@
-package com.qbb.cxda.cache;
+package com.qbb.cxda.shrio.cache;
 
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;

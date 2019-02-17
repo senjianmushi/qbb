@@ -71,30 +71,29 @@
 
     <script>
 
-        // $(function()	{
-            // alert("lhj");
-        //     $('.chart').easyPieChart({
-        //         easing: 'easeOutBounce',
-        //         size: '140',
-        //         lineWidth: '7',
-        //         barColor: '#7266ba',
-        //         onStep: function(from, to, percent) {
-        //             $(this.el).find('.percent').text(Math.round(percent));
-        //         }
-        //     });
-        //
-        //     $('.sortable-list').sortable();
-        //
-        //     $('.todo-checkbox').click(function()	{
-        //         var _activeCheckbox = $(this).find('input[type="checkbox"]');
-        //         if(_activeCheckbox.is(':checked'))	{
-        //             $(this).parent().addClass('selected');
-        //         }else	{
-        //             $(this).parent().removeClass('selected');
-        //         }
-        //     });
-        //
-        //  });
+        function modifypassword(){
+            //页面层
+            layer.open({
+                type: 2,
+                title: '修改密码',
+                shadeClose: true, //点击遮罩关闭层
+                area: ['400px', '200px'],
+                content: "/view/updatePwd"
+            });
+        }
+        function loginout() {
+            $.ajax({
+                // 异步方式
+                url:  '/loginout',
+                async: true,
+                type: "get",
+                success: function (result) {
+                    if(result == "success"){
+                       window.location.href="/view/login";
+                    }
+                }
+            });
+        }
     </script>
 
 </head>
@@ -134,7 +133,7 @@
                 <!-- 头像 -->
                 <div class="user-block hidden-xs">
                     <a href="#" id="userToggle" data-toggle="dropdown">
-                        <img th:src="@{/img/admin/profile/profile1.jpg}" alt="" class="img-circle inline-block user-profile-pic">
+                        <img th:src="@{/img/admin/head.jpg}" alt="" class="img-circle inline-block user-profile-pic">
                         <div class="user-detail inline-block">
                             [[${session.user.name}]]：
                             <!--<input type="text" name="openid" id="openid" th:value="${session.name}"/>-->
@@ -153,12 +152,13 @@
                                         <!--<i class="fa fa-edit fa-lg"></i><span class="m-left-xs">我的资料</span>-->
                                     <!--</a>-->
                                 <!--</li>-->
-                                <!--<li>-->
-                                    <!--<a href="inbox.html">-->
-                                        <!--<i class="fa fa-inbox fa-lg"></i><span class="m-left-xs">修改密码</span>-->
-                                    <!--</a>-->
-                                <!--</li>-->
                                 <li>
+                                    <a onclick="modifypassword()">
+                                        <i class="fa fa-inbox fa-lg"></i><span class="m-left-xs">修改密码</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <!--<a onclick="loginout()">-->
                                     <a href="/loginout">
                                         <i class="fa fa-power-off fa-lg"></i><span class="m-left-xs">登出</span>
                                     </a>

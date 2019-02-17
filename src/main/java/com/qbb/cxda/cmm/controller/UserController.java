@@ -146,6 +146,10 @@ public class UserController {
     @PostMapping("register")
     public ResultObject Register(@RequestBody User user){
         try{
+            ResultObject validateResult = validation(user);
+            if(validateResult.getCode() != 0){
+                return validateResult;
+            }
             String password = user.getPassword();
             // 生成6位数的随机数
             String salt = String.valueOf(new Random().nextInt(999999));
@@ -157,6 +161,32 @@ public class UserController {
         }catch (Exception e){
             e.printStackTrace();
             return new ResultObject(BaseEnums.UNEXPECTED_ERROR,"操作失败");
+        }
+        return new ResultObject(BaseEnums.SUCCESS);
+    }
+
+    ResultObject validation(User user){
+        List<User> tempUserList = userService.selectUserList(new User(user.getUsername()));
+        if(tempUserList.size() > 0 ){
+            return new ResultObject(BaseEnums.EXITED_USER,"该用户名已注册");
+        }
+        User userTemp = new User();
+        userTemp.setEmail(user.getEmail());
+        tempUserList = userService.selectUserList(userTemp);
+        if(tempUserList.size() > 0 ){
+            return new ResultObject(BaseEnums.EXITED_EMAIL,"该邮箱已注册");
+        }
+        userTemp.setEmail(null);
+        userTemp.setTelephone(user.getTelephone());
+        tempUserList = userService.selectUserList(userTemp);
+        if(tempUserList.size() > 0 ){
+            return new ResultObject(BaseEnums.EXITED_TELEPHONE,"该手机号已注册");
+        }
+        userTemp.setTelephone(null);
+        userTemp.setName(user.getName());
+        tempUserList = userService.selectUserList(userTemp);
+        if(tempUserList.size() > 0 ){
+            return new ResultObject(BaseEnums.EXITED_TELEPHONE,"该公司名称已被注册");
         }
         return new ResultObject(BaseEnums.SUCCESS);
     }
@@ -204,4 +234,40 @@ public class UserController {
         return new ResultObject(BaseEnums.SUCCESS,uploadFileName);
     }
 
+
+    /**
+     * 修改密码
+     * @param userId    用户id
+     * @param password  老密码
+     * @param newPassword   新密码
+     * @return
+     */
+    @PostMapping("updateUserPwd")
+    @Transient
+    public ResultObject updateUserPwd(String userId, String password,String newPassword){
+        if(userId == null || CommonUtil.ifEmpty(userId)){
+            return new ResultObject(BaseEnums.PARAM_ERROR,"传入参数出错：用户id");
+        }
+        if(password == null || CommonUtil.ifEmpty(password)){
+            return new ResultObject(BaseEnums.PARAM_ERROR,"传入参数出错：老密码");
+        }
+        if(newPassword == null || CommonUtil.ifEmpty(newPassword)){
+            return new ResultObject(BaseEnums.PARAM_ERROR,"传入参数出错：新密码");
+        }
+        try{
+            User user = userService.selectObject(Integer.valueOf(userId));
+            byte result = userService.updatePwd(user,password,newPassword);
+            if(result == 0){
+                return new ResultObject(BaseEnums.WRONG_PASSWORD,"原始密码输入有误");
+            }else if(result == 1){
+                return new ResultObject(BaseEnums.SUCCESS);
+            }else{
+                return new ResultObject(BaseEnums.UNEXPECTED_ERROR,"未知错误");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResultObject(BaseEnums.UNEXPECTED_ERROR,"操作失败");
+        }
+
+    }
 }

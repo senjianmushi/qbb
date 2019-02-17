@@ -16,6 +16,7 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.ByteSource;
 import org.slf4j.LoggerFactory;
@@ -91,7 +92,7 @@ public class UserRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         // TODO Auto-generated method stub
-        logger.info("----------------  执行 Shiro 凭证认证  ---------------------");
+        logger.info("----------------  执行 Shiro 认证登录  ---------------------");
         //1：从主体春过来的认证信息获取用户信息
         UsernamePasswordToken authenUser = (UsernamePasswordToken) authenticationToken;
         String userName = authenUser.getUsername();
@@ -106,6 +107,13 @@ public class UserRealm extends AuthorizingRealm {
         simpleAuthenticationInfo.setCredentialsSalt(ByteSource.Util.bytes(newUser.getSalt()));//加盐
         return simpleAuthenticationInfo;
     }
+
+    public void removeUserAuthorizationInfoCache(String username) {
+        SimplePrincipalCollection pc = new SimplePrincipalCollection();
+        pc.add(username, super.getName());
+        super.clearCachedAuthorizationInfo(pc);
+    }
+
 
     public static void main(String args[]){
         String password = "1234567";

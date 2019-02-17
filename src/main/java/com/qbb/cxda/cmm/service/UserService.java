@@ -3,6 +3,8 @@ package com.qbb.cxda.cmm.service;
 import com.github.pagehelper.PageInfo;
 import com.qbb.cxda.cmm.entity.User;
 
+import java.util.List;
+
 public interface UserService {
 
     /**
@@ -56,6 +58,22 @@ public interface UserService {
      * @return
      */
     User selectUser(User user);
+
+    /**
+     * 查找用户
+     * @param user
+     * @return
+     */
+    List<User> selectUserList(User user);
+
+    /**
+     * 修改密码
+     * @param user  用户信息
+     * @param oldPwd    原始密码
+     * @param newPwd    新密码
+     * @return  0：密码相同；1：修改成功；-1：修改失败
+     */
+    byte updatePwd(User user, String oldPwd, String newPwd);
 
 
 }

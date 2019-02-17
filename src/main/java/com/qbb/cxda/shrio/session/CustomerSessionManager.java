@@ -1,4 +1,4 @@
-package com.qbb.cxda.session;
+package com.qbb.cxda.shrio.session;
 
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.UnknownSessionException;
@@ -12,7 +12,7 @@ import java.io.Serializable;
 public class CustomerSessionManager extends DefaultWebSessionManager {
 
     /**
-     * 这里有优化作用
+     * 自定义session管理：这里有优化作用
      * @param sessionKey
      * @return
      * @throws UnknownSessionException

@@ -1,6 +1,5 @@
 package com.qbb.cxda.web;
 
-import com.qbb.cxda.base.ResultObject;
 import com.qbb.cxda.cmm.entity.Employee;
 import com.qbb.cxda.cmm.entity.User;
 import com.qbb.cxda.cmm.response.EmployeeListResponnse;
@@ -8,20 +7,16 @@ import com.qbb.cxda.cmm.response.UserListResponse;
 import com.qbb.cxda.cmm.service.EmployeeService;
 import com.qbb.cxda.cmm.service.UserService;
 import com.qbb.cxda.config.PropertiesConfig;
-import com.qbb.cxda.constant.BaseEnums;
 import com.qbb.cxda.util.JedisUtil;
 import com.qbb.cxda.util.SerializeUtil;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scripting.bsh.BshScriptUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-import redis.clients.jedis.JedisPool;
-
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @Controller
@@ -34,9 +29,6 @@ public class ViewController {
     UserService userService;
     @Autowired
     PropertiesConfig propertiesConfig;
-
-    @Autowired
-    private JedisUtil jedisUti;
 
     /**
      * 首页
@@ -53,8 +45,16 @@ public class ViewController {
      */
     @RequestMapping("/login")
     public String viewLogin(){
-        //jedisUti.get(null);
         return "login";
+    }
+
+    /**
+     * 登录界面
+     * @return
+     */
+    @RequestMapping("/loginout")
+    public String viewLoginout(){
+        return "loginout";
     }
 
     /**
@@ -69,15 +69,18 @@ public class ViewController {
      * 搜索页面
      * @return
      */
+//    @RequiresRoles("admin,member")
     @RequestMapping("/adminIndex")
     public ModelAndView viewAdminIndex() throws IOException, ClassNotFoundException {
 
         Subject subject= SecurityUtils.getSubject();
-        Session session = subject.getSession();
-        byte[] bytes = (byte[]) subject.getPrincipal();
-        User user=  (User) SerializeUtil.deserialize(bytes);
-        ModelAndView modelAndView = new ModelAndView("/admin/index");
-        session.setAttribute("user",user);
+        //Session session = subject.getSession();
+        //System.out.println("subject.getPrincipal(): "+ subject.getPrincipal());
+       // byte[] bytes = (byte[]) subject.getPrincipal();
+        //User user=  (User) SerializeUtil.deserialize(bytes);
+        System.out.println("登录成功跳转到后台首页：has.role ："+ subject.hasRole("admin"));
+        ModelAndView modelAndView = new ModelAndView("admin/index");
+        //session.setAttribute("user",user);
         return modelAndView;
     }
 
@@ -168,6 +171,16 @@ public class ViewController {
         }
         UserListResponse userListResponse  = new UserListResponse(user,propertiesConfig.getPrixPath());
         mv.addObject("user", userListResponse);
+        return mv;
+    }
+
+    /**
+     * 修改密码的页面
+     * @return
+     */
+    @RequestMapping("updatePwd")
+    public ModelAndView updatePwd(){
+        ModelAndView mv = new ModelAndView("admin/user/updatePassword");
         return mv;
     }
 

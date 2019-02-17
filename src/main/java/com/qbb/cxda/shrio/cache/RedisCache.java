@@ -1,4 +1,4 @@
-package com.qbb.cxda.cache;
+package com.qbb.cxda.shrio.cache;
 
 import com.qbb.cxda.util.JedisUtil;
 import org.apache.shiro.cache.Cache;
@@ -13,13 +13,13 @@ import java.util.Set;
 @Component
 public class RedisCache<k,v> implements Cache<k,v> {
 
-    private final String CACHE_PREFIX = "crrchz-cache:";
+    private final String CACHE_PREFIX = "crrchz-cache";
 
     @Autowired
     private JedisUtil jedisUtil;
 
     private  byte[] getKey(k k){
-        System.out.println("从redis获取数据");
+        System.out.println("从redis获取缓存数据");
         if(k instanceof  String ){
             return (CACHE_PREFIX + k).getBytes();
         }
@@ -46,6 +46,7 @@ public class RedisCache<k,v> implements Cache<k,v> {
 
     @Override
     public v remove(k k) throws CacheException {
+        System.out.println("redis删除缓存数据");
         byte[] key = getKey(k);
         byte[] value = jedisUtil.get(key);
         jedisUtil.del(key);

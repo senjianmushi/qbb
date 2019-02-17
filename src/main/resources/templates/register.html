@@ -8,6 +8,13 @@
 	<link rel="stylesheet" th:href="@{/css/login/jq22.css}">
 	<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/bootstrap-3.3.4.css">
 	<link rel="stylesheet" type="text/css" href="/plugin/webuploader/webuploader-0.1.5/webuploader.css">
+	<link href="https://cdn.bootcss.com/bootstrap-validator/0.5.3/css/bootstrapValidator.css" rel="stylesheet">
+	<style>
+		.margin {
+			margin: 0px;
+			margin-top: 40px;
+		}
+	</style>
 	<!--<script src="/plugin/bootstrap/bootstrap.min.js"></script>-->
 </head>
 <body>
@@ -15,7 +22,7 @@
 <div id="login">
 	<div class="wrapper">
 		<div class="login">
-			<form action="/dologin" method="post" class="container offset1 loginform" style="max-width:800px">
+			<form action="/user/register" method="post" class="container offset1 loginform" style="max-width:800px" id="myform">
 				<div id="owl-login">
 					<div class="hand"></div>
 					<div class="hand hand-r"></div>
@@ -27,36 +34,40 @@
 				<div class="pad" >
 					<div class="col-md-6">
 						<div class="control margin">
-							<input id="username" type="text" name="username" placeholder="用户名" tabindex="1" autofocus="autofocus" class="form-control">
+							<input id="username" type="text" name="username" placeholder="用户名" tabindex="1"
+								   autofocus="autofocus" class="form-control" required>
 						</div>
 
 						<div class="control margin">
-							<input id="password" type="password" name="password" placeholder="密码" tabindex="2" class="form-control input-medium">
+							<input id="password" type="password" name="password" placeholder="密码" tabindex="2" class="form-control input-medium" required>
 						</div>
 
 						<div class="control margin">
-							<input id="password2" type="password" name="password2" placeholder="密码确认" tabindex="2" class="form-control input-medium">
+							<input id="password2" type="password" name="password2" placeholder="密码确认" tabindex="2" class="form-control input-medium" equalTo="#password" >
 						</div>
 						<div class="control margin">
 							<!--dom结构部分-->
 							<div id="uploader-demo">
 								<!--用来存放item-->
-								<div id="fileList" class="uploader-list"></div>
+								<div id="fileList" class="uploader-list" required></div>
 								<div id="filePicker">选择图片</div>
 
 							</div>
-							<input type="text" value="" id="docUrl">
+							<input type="hidden" value="" id="docUrl" required >
 						</div>
 					</div>
 					<div class="col-md-6">
 						<div class="control margin">
-							<input id="name" type="text" name="name" placeholder="公司名称" tabindex="1" autofocus="autofocus" class="form-control input-medium">
+							<input id="name" type="text" name="name" placeholder="公司名称" tabindex="1" autofocus="autofocus"
+								   class="form-control input-medium required">
 						</div>
 						<div class="control margin">
-							<input id="email" type="text" name="email" placeholder="邮箱" tabindex="1" autofocus="autofocus" class="form-control input-medium">
+							<input id="email" type="text" name="email" placeholder="邮箱" tabindex="1" autofocus="autofocus"
+								   class="form-control input-medium required email">
 						</div>
 						<div class="control margin">
-							<input id="telephone" type="text" name="telephone" placeholder="手机" tabindex="1" autofocus="autofocus" class="form-control input-medium">
+							<input id="telephone" type="text" name="telephone" placeholder="手机" tabindex="1" autofocus="autofocus"
+								   class="form-control input-medium" required number="true" minlength="11" >
 						</div>
 						<div class="control margin">
 							<input id="confirm" type="checkbox">同意
@@ -76,7 +87,7 @@
 				<div class="form-actions">
 					<a href="#" tabindex="5" class="btn pull-left btn-link text-muted">信息填写完成后会经过审核1-2日</a>
 					<a href="/view/login" tabindex="6" class="btn btn-link text-muted">登陆</a>
-					<button type="button" tabindex="4" class="btn btn-primary" id="btnRegister">注册</button>
+					<button type="submit" tabindex="4" class="btn btn-primary" id="btnRegister">注册</button>
 				</div>
 			</form>
 		</div>
@@ -85,6 +96,9 @@
 	<script src="/plugin/layer/layer.js"></script>
 	<script type="text/javascript" th:src="@{/plugin/webuploader/webuploader-0.1.5/webuploader.js}"></script>
 	<script type="text/javascript" th:src="@{/plugin/bootstrap/bootstrap.js}"></script>
+	<script type="text/javascript" th:src="@{/plugin/validate/jquery.metadata.js}"></script>
+	<script type="text/javascript" th:src="@{/plugin/validate/jquery.validate.min.js}"></script>
+	<script type="text/javascript" th:src="@{/plugin/validate/messages_zh.js}"></script>
 	<script>
         var $ = jQuery,
             $list = $('#fileList'),
@@ -182,39 +196,61 @@
             $( '#'+file.id ).find('.progress').remove();
         });
 
+        // 重置表单
+        $().ready(function() {
+            $("#myform").validate();
+        });
 
-		$("#btnRegister").click(function () {
-            var user ={
-                username:$("#username").val(),
-                password:$("#password").val(),
-                name:$("#name").val(),
-                email:$("#email").val(),
-                telephone:$("#telephone").val(),
-                docUrl:$("#docUrl").val()
-            }
+        $.validator.setDefaults({
+            errorElement: "em",
+            submitHandler: function() {
+                var username = $("#username").val();
+                var password = $("#password").val();
+                var name = $("#name").val();
+                var email = $("#email").val();
+                var telephone = $("#telephone").val();
+                var docUrl = $("#docUrl").val();
+                if(docUrl == ""){
+                    layer.msg('请上传公司盖章文件图片', {icon: 0});
+                    return;
+				}
 
-            if($("#confirm").is(":checked")){//选中
-                alert("开始申请");
-                //提交申请
-                $.ajax({
-                    // 异步方式
-                    url:  '/user/register',
-                    async: true,
-                    type: "post",
-                    datatype: 'json',
-                    contentType:"application/json",//这里要加上这个头
-                    data: JSON.stringify(user),
-                    success: function (result) {
-                        if(result.code == 0){
-                            layer.msg('提交审核中，请耐心等候', {icon: 1});
-                            //getList(1);
+                var user ={
+                    username:username,
+                    password:password,
+                    name:name,
+                    email:email,
+                    telephone:telephone,
+                    docUrl:docUrl
+                }
+
+                if($("#confirm").is(":checked")){//选中
+
+                    //提交申请
+                    $.ajax({
+                        // 异步方式
+                        url:  '/user/register',
+                        async: true,
+                        type: "post",
+                        datatype: 'json',
+                        contentType:"application/json",//这里要加上这个头
+                        data: JSON.stringify(user),
+                        success: function (result) {
+                            if(result.code == 0){
+                                layer.msg('已提交审核中，请耐心等候', {icon: 1});
+                                setTimeout(function() {
+                                    window.location.href="/view/login";
+                                }, 3000 );
+                            }else{
+                                layer.msg(result.data, {icon: 1});
+							}
                         }
-                    }
-                });
-            }else{
-                layer.msg('若注册，需同意注册声明', {icon: 0});
-			}
-        })
+                    });
+                }else{
+                    layer.msg('若注册，需同意注册声明', {icon: 0});
+                }
+            }
+        });
 
 		//声明
         $("[data-toggle='popover']").popover();

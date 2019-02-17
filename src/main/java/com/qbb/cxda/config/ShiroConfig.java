@@ -3,10 +3,9 @@ package com.qbb.cxda.config;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import com.qbb.cxda.base.UserRealm;
-import com.qbb.cxda.cache.RedisCachManger;
-import com.qbb.cxda.session.CustomerSessionManager;
-import com.qbb.cxda.session.RedisSessionDao;
-import org.apache.shiro.session.mgt.SessionManager;
+import com.qbb.cxda.shrio.cache.RedisCachManger;
+import com.qbb.cxda.shrio.session.CustomerSessionManager;
+import com.qbb.cxda.shrio.session.RedisSessionDao;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -44,7 +42,7 @@ public class ShiroConfig {
         //授权拦截返回页面
         shiroFilterFactoryBean.setUnauthorizedUrl("/view/login");
         //拦截页面
-        Map<String,String> fMap=new LinkedHashMap<>();
+        Map<String,String> fMap = new LinkedHashMap<>();
         fMap.put("/","anon");
         fMap.put("/static/**","anon");
         fMap.put("/css/**","anon");
@@ -56,13 +54,12 @@ public class ShiroConfig {
         fMap.put("/view/register","anon");
         fMap.put("/view/index","anon");
         fMap.put("/dologin","anon");
+        fMap.put("/logout","logout");
         fMap.put("/user/register","anon");
         fMap.put("/user/uploadDoc","anon");
         fMap.put("/blacklist/**","anon");
         fMap.put("/userdoc/**","anon");
         fMap.put("/**","authc");
-//        fMap.put("/all","authc");
-//        fMap.put("/one","authc");
         //拦截未授权
         //fMap.put("/all","perms[user:all]");
         //fMap.put("/one","perms[user:one]");
@@ -81,10 +78,10 @@ public class ShiroConfig {
             @Qualifier("customerSessionManager") CustomerSessionManager customerSessionManager,
             @Qualifier("redisCachManger") RedisCachManger redisCachManger){
         DefaultWebSecurityManager defaultWebSecurityManager=new DefaultWebSecurityManager();
-        defaultWebSecurityManager.setRealm(userRealm);
         //设置session的管理器
         defaultWebSecurityManager.setSessionManager(customerSessionManager);
         defaultWebSecurityManager.setCacheManager(redisCachManger);
+        defaultWebSecurityManager.setRealm(userRealm);
         return defaultWebSecurityManager;
     }
     @Bean(name = "userRealm")
@@ -100,6 +97,7 @@ public class ShiroConfig {
         return shiroSessionManager;
     }
 
+    //定义redis缓存管理
     @Bean(name = "redisCachManger")
     public RedisCachManger redisCachManger(){
         return new RedisCachManger();

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="description" content="此代码内容为超萌的猫头鹰登录界面" />
+    <title>超萌的猫头鹰登录界面</title>
+    <link rel="stylesheet" th:href="@{/css/login/jq22.css}">
+</head>
+<body>
+<!-- begin -->
+<div id="login">
+    <div class="wrapper">
+        <div class="login">
+            <form action="/dologin" method="post" class="container offset1 loginform">
+                <div id="owl-login">
+                    <div class="hand"></div>
+                    <div class="hand hand-r"></div>
+                    <div class="arms">
+                        <div class="arm"></div>
+                        <div class="arm arm-r"></div>
+                    </div>
+                </div>
+                <div class="pad">
+                   登出<a href="/view/loginout">登录页面</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <script th:src="@{/js/jquery.min.js}" type="text/javascript" ></script>
+    <script th:src="@{/js/login.js}" type="text/javascript" ></script>
+</div>
+<!-- end -->
+</body>
+</html>

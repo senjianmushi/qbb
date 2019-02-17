@@ -43,4 +43,5 @@ public class User implements Serializable {
         this.username = username;
         this.isDelete = BasecConstant.IS_DELETE_NO;
     }
+
 }

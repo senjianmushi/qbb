@@ -18,7 +18,11 @@ public enum BaseEnums implements BaseEnum<Integer, String> {
     SESSION_EXIST(10004, "session exist"),//session已存在，账号登录中
     USER_NAME_REPEATED(1005, "user name repeated"),// 用户名重复
     NO_SUCH_USER(1006, "no such user or was deleted"),// 没有该用户或者已被删除
-    UNEXPECTED_ERROR(1007, "unexpected error"),// 未知错误
+    EXITED_USER(1007, "the username is exited"),// 用户名已被注册
+    EXITED_TELEPHONE(1008, "the telephone is exited"),// 手机号码已被注册
+    EXITED_EMAIL(1009, "the email is exited"),// 邮箱已被注册
+    EXITED_COMPANY(1010, "the company is exited"),// 公司名称已被注册
+    UNEXPECTED_ERROR(1011, "unexpected error"),// 未知错误
 
     /**
      * 候选人相关的11000-12000

@@ -25,6 +25,12 @@ public class CommonUtil {
 
     }
 
+    /**
+     * MD5加密
+     * @param password  密码
+     * @param salt  加盐
+     * @return  密码+盐的MD5加密
+     */
     public static String encryptionMD5(String password,String salt){
         Md5Hash md5Hash = new Md5Hash(password,salt);
         return md5Hash.toString();
