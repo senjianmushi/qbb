@@ -1,6 +1,7 @@
 package com.qbb.cxda.cmm.response;
 
 import com.qbb.cxda.cmm.entity.Employee;
+import com.qbb.cxda.util.CommonUtil;
 import lombok.Data;
 
 import java.util.Date;
@@ -23,7 +24,7 @@ public class EmployeeListResponnse {
     public EmployeeListResponnse(Employee employee,String prixPath){
         this.id  = employee.getId();
         this.name = employee.getName();
-        this.identityId = employee.getIdentityId();
+        this.identityId = CommonUtil.getIdentityId(employee.getIdentityId());
         this.describes = employee.getDescribes();
         this.comment = employee.getComment();
         this.picUrls = employee.getPicUrls().split(";");

@@ -19,7 +19,7 @@ public class RedisCache<k,v> implements Cache<k,v> {
     private JedisUtil jedisUtil;
 
     private  byte[] getKey(k k){
-        System.out.println("从redis获取缓存数据");
+//        System.out.println("从redis获取缓存数据");
         if(k instanceof  String ){
             return (CACHE_PREFIX + k).getBytes();
         }
@@ -46,7 +46,7 @@ public class RedisCache<k,v> implements Cache<k,v> {
 
     @Override
     public v remove(k k) throws CacheException {
-        System.out.println("redis删除缓存数据");
+//        System.out.println("redis删除缓存数据");
         byte[] key = getKey(k);
         byte[] value = jedisUtil.get(key);
         jedisUtil.del(key);

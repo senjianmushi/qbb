@@ -37,5 +37,18 @@ public class CommonUtil {
     }
 
 
+    /**
+     * 身份证信息隐藏中间数字
+     * @param identityId
+     * @return
+     */
+    public static String getIdentityId(String identityId){
+        String id_middle = identityId.substring(4,14);
+        return identityId.replaceAll(id_middle,"**************");
+    }
+
+//    public static  void main(String[] args){
+//        System.out.println(CommonUtil.getIdentityId("330381199007164174"));
+//    }
 
 }

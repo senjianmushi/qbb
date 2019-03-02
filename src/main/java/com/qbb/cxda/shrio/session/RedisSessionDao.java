@@ -27,7 +27,7 @@ public class RedisSessionDao extends AbstractSessionDAO {
     }
 
     private void saveSessin(Session session){
-        System.out.println("redis保存session数据");
+//        System.out.println("redis保存session数据");
         if(session != null && session.getId() != null){
             byte[] key = getKey(session.getId().toString());
             byte[] value = SerializationUtils.serialize(session);
@@ -38,7 +38,7 @@ public class RedisSessionDao extends AbstractSessionDAO {
 
     @Override
     protected Serializable doCreate(Session session) {
-        System.out.println("redis创建session数据");
+//        System.out.println("redis创建session数据");
         Serializable sessionId = generateSessionId(session);
         assignSessionId(session,sessionId);
         saveSessin(session);
@@ -47,7 +47,7 @@ public class RedisSessionDao extends AbstractSessionDAO {
 
     @Override
     protected Session doReadSession(Serializable sessionId) {
-        System.out.println("从redis获取session数据");
+//        System.out.println("从redis获取session数据");
         if(sessionId == null){
             return null;
         }
@@ -63,7 +63,7 @@ public class RedisSessionDao extends AbstractSessionDAO {
 
     @Override
     public void delete(Session session) {
-        System.out.println("redis删除session数据");
+//        System.out.println("redis删除session数据");
         if(session == null && session.getId() == null){
             return;
         }
@@ -73,7 +73,7 @@ public class RedisSessionDao extends AbstractSessionDAO {
 
     @Override
     public Collection<Session> getActiveSessions() {
-        System.out.println("redis获取当前存在session数据");
+//        System.out.println("redis获取当前存在session数据");
         Set<byte[]> keys = jedisUtil.keys(SHRIO_SESSION_PREFIX);
         Set<Session> sessions = new HashSet<>();
         if(CollectionUtils.isEmpty(keys)){

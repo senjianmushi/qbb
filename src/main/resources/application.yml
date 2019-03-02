@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dev
+    active: prod
   # durid的配置
 #  datasource:
 #    driver-class-name: com.mysql.jdbc.Driver

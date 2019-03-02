@@ -4,6 +4,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="description" content="清白白注册" />
+	<link rel="icon" th:href="@{/img/admin/logo.png}" >
 	<title>清白白注册</title>
 	<link rel="stylesheet" th:href="@{/css/login/jq22.css}">
 	<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/bootstrap-3.3.4.css">
@@ -13,6 +14,9 @@
 		.margin {
 			margin: 0px;
 			margin-top: 40px;
+		}
+		a.redfont{
+			color: red;
 		}
 	</style>
 	<!--<script src="/plugin/bootstrap/bootstrap.min.js"></script>-->
@@ -72,12 +76,13 @@
 						<div class="control margin">
 							<input id="confirm" type="checkbox">同意
 							<a class="modalLink" data-toggle="popover" data-placement="left"
-							   data-trigger="hover"
-							   data-html="true" title="<b align='left' >注册声明 </br>
+							   data-trigger="click"
+							   data-html="true" title="<b align='left' >服务协议 </br>
 								一、用户注册、登陆，视为接受清白白的约束。</br>
 								二、用户承诺遵守国家的法律法规及部门规章 </br>
 								三、用户注册时需要提交公司的盖章的照片,模板请看附件。 </br>
-								四、用户侵犯第三人的知识产权，由该用户承担全部法律责任。 </br></b>
+								四、用户侵犯第三人的知识产权，由该用户承担全部法律责任。 </br>
+								</b>
 								">《注册声明》
 								<a id="template_download" href="/download/qbb_template_download.docx">《模板下载》</a>
 							</a>
@@ -85,7 +90,7 @@
 					</div>
 				</div>
 				<div class="form-actions">
-					<a href="#" tabindex="5" class="btn pull-left btn-link text-muted">信息填写完成后会经过审核1-2日</a>
+					<a href="#" tabindex="5" class="btn pull-left btn-link redfont">目前仅限企业及HR注册。注册请下载模板-拍照盖章模板-选择图片。</a>
 					<a href="/view/login" tabindex="6" class="btn btn-link text-muted">登陆</a>
 					<button type="submit" tabindex="4" class="btn btn-primary" id="btnRegister">注册</button>
 				</div>

@@ -83,7 +83,7 @@ public class LoginController {
         Subject subject = SecurityUtils.getSubject();
         if (subject.isAuthenticated()) {
             subject.logout();
-            System.out.println("loginOUt执行完毕");
+//            System.out.println("loginOUt执行完毕");
         }
         System.out.println("subject.isAuthenticated ："+ subject.isAuthenticated());
         return "redirect:/view/loginout";
